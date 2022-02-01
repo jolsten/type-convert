@@ -4,20 +4,20 @@ from numba import njit, vectorize
 from itertools import zip_longest
 
 from typeconverter.utils import bits_to_wordsize, mask
-from typeconverter.dec32 import func, jfunc, ufunc
+from typeconverter.dec64 import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
 
 S = (0b0, 0b1)
 E = (0b00000000, 0b11111111)
-M = (0x00000000, 0x007FFFFF, 0x003FFFFF)
+M = (0x0000000000000000, 0x003FFFFFFFFFFFFF, 0x007FFFFFFFFFFFFF)
 
 tests = []
 for s in S:
     for e in E:
         for m in M:
-            val_in = np.uint32( (s<<31) + (e<<23) + m )
-            val_out = (-1)**s * (m / 2**24) * 2**(e - 128)
+            val_in = np.uint64( (s<<63) + (e<<55) + m )
+            val_out = (-1)**s * (m / 2**56) * 2**(e - 128)
             tests.append( (val_in, pytest.approx(val_out)) )
 
 

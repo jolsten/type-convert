@@ -3,7 +3,7 @@ import numpy as np
 from numba import njit, vectorize
 from itertools import zip_longest
 
-from typeconverter.utils import bits_to_wordsize
+from typeconverter.utils import bits_to_wordsize, mask
 from typeconverter.twoscomp import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
@@ -56,6 +56,8 @@ tests = []
 for size in TEST_CASES:
     for val_in, val_out in TEST_CASES[size]:
         tests.append( (size, val_in, val_out) )
+tests += [(size, 0, 0) for size in np.arange(64)+1]
+tests += [(size, mask(size), -1) for size in np.arange(64)+1]
 
 
 @pytest.mark.parametrize('size, val_in, val_out', tests)

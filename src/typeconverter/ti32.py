@@ -1,8 +1,6 @@
 import numpy as np
 from numba import njit, vectorize
 
-from .types import UnsignedInteger, SignedInteger
-
 signatures = [
     'f8(u4)',
 ]

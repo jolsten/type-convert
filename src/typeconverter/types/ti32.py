@@ -5,7 +5,7 @@ signatures = [
     'f8(u4)',
 ]
 
-from typeconverter.twoscomp import jfunc as uint_to_twoscomp
+from .twoscomp import jfunc as uint_to_twoscomp
 
 import struct
 

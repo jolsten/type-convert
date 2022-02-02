@@ -12,7 +12,7 @@ S = [0, 1]
 E = [0x7F, 0x7E, 0x01, 0xFF]
 M = [0x007FFFFFFF, 0x007FFFFFFE, 0x007FFFFFFD, 0x0000000002, 0x0000000001, 0x0000000000]
 
-from typeconverter.twoscomp import func as uint_to_twoscomp
+from typeconverter.types.twoscomp import func as uint_to_twoscomp
 tests = []
 for s in S:
     for e in E:

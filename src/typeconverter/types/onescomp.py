@@ -1,7 +1,7 @@
 import numpy as np
 from numba import njit, vectorize, generated_jit
 
-from .typing import UnsignedInteger, SignedInteger
+from typeconverter.typing import UnsignedInteger, SignedInteger
 
 signatures = [
     'i1(u1,u1)',

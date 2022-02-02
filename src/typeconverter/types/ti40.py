@@ -5,7 +5,7 @@ signatures = [
     'f8(u8)',
 ]
 
-from typeconverter.twoscomp import jfunc as uint_to_twoscomp
+from .twoscomp import jfunc as uint_to_twoscomp
 
 def func(value: np.uint64) -> np.float64:
     # Reference:

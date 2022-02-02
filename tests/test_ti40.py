@@ -4,7 +4,7 @@ from numba import njit, vectorize
 from itertools import zip_longest
 
 from typeconverter.utils import bits_to_wordsize, mask
-from typeconverter.ti40 import func, jfunc, ufunc
+from typeconverter.types.ti40 import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
 

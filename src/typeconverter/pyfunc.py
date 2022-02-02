@@ -1,13 +1,11 @@
-import typeconverter.types as tct
+from typeconverter.types.onescomp import func as onescomp
+from typeconverter.types.twoscomp import func as twoscomp
 
-from tct.onescomp import func as onescomp
-from tct.twoscomp import func as twoscomp
+from typeconverter.types.milstd1750a32 import func as milstd1750a32
+from typeconverter.types.milstd1750a48 import func as milstd1750a48
 
-from tct.milstd1750a32 import func as milstd1750a32
-from tct.milstd1750a48 import func as milstd1750a48
+from typeconverter.types.ti32 import func as ti32
+from typeconverter.types.ti40 import func as ti40
 
-from tct.ti32 import func as ti32
-from tct.ti40 import func as ti40
-
-from tct.dec32 import func as dec32
-from tct.dec64 import func as dec64
+from typeconverter.types.dec32 import func as dec32
+from typeconverter.types.dec64 import func as dec64

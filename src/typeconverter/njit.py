@@ -1,13 +1,11 @@
-import typeconverter.types as tct
+from typeconverter.types.onescomp import njit as onescomp
+from typeconverter.types.twoscomp import njit as twoscomp
 
-from tct.onescomp import njit as onescomp
-from tct.twoscomp import njit as twoscomp
+from typeconverter.types.milstd1750a32 import njit as milstd1750a32
+from typeconverter.types.milstd1750a48 import njit as milstd1750a48
 
-from tct.milstd1750a32 import njit as milstd1750a32
-from tct.milstd1750a48 import njit as milstd1750a48
+from typeconverter.types.ti32 import njit as ti32
+from typeconverter.types.ti40 import njit as ti40
 
-from tct.ti32 import njit as ti32
-from tct.ti40 import njit as ti40
-
-from tct.dec32 import njit as dec32
-from tct.dec64 import njit as dec64
+from typeconverter.types.dec32 import njit as dec32
+from typeconverter.types.dec64 import njit as dec64

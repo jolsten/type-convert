@@ -8,21 +8,24 @@ from typeconverter.ti40 import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
 
-E = [0x7F, 0x00, 0xFF]
-M = [0x007FFFFFFF, 0x0000000000, 0x00FFFFFFFF]
+S = [0, 1]
+E = [0x7F, 0x7E, 0x01, 0xFF]
+M = [0x007FFFFFFF, 0x007FFFFFFE, 0x007FFFFFFD, 0x0000000002, 0x0000000001, 0x0000000000]
 
 from typeconverter.twoscomp import func as uint_to_twoscomp
 tests = []
-for e in E:
-    for m in M:
-        val_in = np.uint64( (e << 32) + m )
-        val_out = (uint_to_twoscomp(m, 32) / 2**31) * np.float64(2) ** uint_to_twoscomp(e, 8)
-        tests.append( (val_in, pytest.approx(val_out)) )
+for s in S:
+    for e in E:
+        for m in M:
+            val_in = np.uint64( (e << 32) | (s << 31) | m )
+            val_out = ((-2)**s + float(m) / 2**31) * float(2)**uint_to_twoscomp(e, 8)
+            tests.append( (val_in, pytest.approx(val_out)) )
 
 
 @pytest.mark.parametrize('val_in, val_out', tests)
 def test_func(val_in, val_out):
     print('func')
+    print(f'val_in = {val_in:010x}')
     assert func(val_in) == val_out
 
 

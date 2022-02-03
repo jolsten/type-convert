@@ -10,7 +10,7 @@ def func(value: np.uint32) -> np.float64:
     r"""Convert uint to DEC32
 
     Interprets an unsigned integer as a DEC 32-bit Float and
-    returns an IEEE 32-bit Float.
+    returns an IEEE 64-bit Float.
 
     Parameters
     ----------

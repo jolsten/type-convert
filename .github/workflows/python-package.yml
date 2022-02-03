@@ -39,6 +39,3 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
-    - name: Test build
-      run: |
-        python -m build .

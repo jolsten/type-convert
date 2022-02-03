@@ -41,6 +41,8 @@ The signatures for the supported functions:
 onescomp(uint: np.uint64, size: int) -> np.int64
 twoscomp(uint: np.uint64, size: int) -> np.int64
 
+bcd(uint: np.uint64) -> np.uint64
+
 milstd1750a32(uint: np.uint32) -> np.float32
 milstd1750a48(uint: np.uint64) -> np.float64
 
@@ -49,4 +51,8 @@ ti40(uint: np.uint32) -> np.float64
 
 dec32(uint: np.uint32) -> np.float64
 dec64(uint: np.uint64) -> np.float64
+dec64g(uint: np.uint64) -> np.float64
+
+ibm32(uint: np.uint32) -> np.float64
+ibm64(uint: np.uint64) -> np.float64
 ```

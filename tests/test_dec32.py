@@ -3,24 +3,33 @@ import numpy as np
 from itertools import zip_longest
 from typeconverter.types.dec32 import func, jfunc, ufunc
 
-TEST_ARRAY_SIZE = 100
+# https://pubs.usgs.gov/of/2005/1424/
 
-S = (0b0, 0b1)
-E = (0b00000000, 0b11111111)
-M = (0x00000000, 0x007FFFFF, 0x003FFFFF)
+TEST_ARRAY_SIZE = 100
+TEST_CASES = [
+    # F4
+    (0x40800000,       1.000000),
+    (0xC0800000,      -1.000000),
+    (0x41600000,       3.500000),
+    (0xC1600000,      -3.500000),
+    (0x41490FD0,       3.141590),
+    (0xC1490FD0,      -3.141590),
+    (0x7DF0BDC2,  9.9999999E+36),
+    (0xFDF0BDC2, -9.9999999E+36),
+    (0x03081CEA,  9.9999999E-38),
+    (0x83081CEA, -9.9999999E-38),
+    (0x409E0652,       1.234568),
+    (0xC09E0652,      -1.234568),
+]
 
 tests = []
-for s in S:
-    for e in E:
-        for m in M:
-            val_in = np.uint32((s << 31) + (e << 23) + m)
-            val_out = (-1)**s * (m / 2**24) * 2**(e - 128)
-            tests.append((val_in, pytest.approx(val_out)))
+for val_in, val_out in TEST_CASES:
+    tests.append((np.uint32(val_in), pytest.approx(val_out)))
 
 
 @pytest.mark.parametrize('val_in, val_out', tests)
 def test_func(val_in, val_out):
-    print('func')
+    print('func', val_in, val_out)
     assert func(val_in) == val_out
 
 
@@ -32,7 +41,7 @@ def test_njit(val_in, val_out):
 
 @pytest.mark.parametrize('val_in, val_out', tests)
 def test_vectorize(val_in, val_out):
-    print('ufunc')
+    print('ufunc', val_in, val_out)
     data = np.array([val_in] * TEST_ARRAY_SIZE)
     expected = [val_out] * TEST_ARRAY_SIZE
     assert all([a == b for a, b in zip_longest(ufunc(data), expected)])

@@ -1,8 +1,6 @@
 # type-converter
 Convert various data types to signed integers or IEEE floating point.
 
-Dec32/64 are not well-tested and may not be working as intended.
-
 # usage
 
 For each conversion, there are three kinds of functions to import:

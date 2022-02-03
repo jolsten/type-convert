@@ -11,6 +11,27 @@ signatures = [
 
 
 def func(value: np.uint64) -> np.float64:
+    r"""Convert uint to 1750A32
+
+    Interprets an unsigned integer as a MIL-STD-1750A 48-bit Float and returns
+    an IEEE 64-bit Float.
+
+    Parameters
+    ----------
+    value : unsigned integer
+        Unsigned integer value of the data.
+
+    Returns
+    -------
+    np.float64
+        A float containing the interpretation of `value`.
+
+    Examples
+    --------
+    >>> out = func(0xA00000FF0000)
+    >>> type(out), out
+    (<class 'numpy.float64'>, -0.375)
+    """
     value = np.uint64(value)
     m = np.int64(uint_to_twoscomp(
         ((value & np.uint64(0xFFFFFF000000)) >> np.uint8(8))

@@ -8,6 +8,27 @@ signatures = [
 
 
 def func(value: np.uint64) -> np.float64:
+    r"""Convert uint to TI40
+
+    Interprets an unsigned integer as a Texas Instruments 40-bit Float and
+    returns an IEEE 64-bit Float.
+
+    Parameters
+    ----------
+    value : unsigned integer
+        Unsigned integer value of the data.
+
+    Returns
+    -------
+    np.float64
+        A float containing the interpretation of `value`.
+
+    Examples
+    --------
+    >>> out = func(0xFF80000000)
+    >>> type(out), out
+    (<class 'numpy.float64'>, -1.0)
+    """
     # Reference:
     # Telemetry Standards, RCC Standard 106-20 Chapter 9, July 2020
     value = np.uint64(value)

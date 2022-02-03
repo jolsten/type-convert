@@ -20,6 +20,8 @@ TEST_CASES = [
     (0x83081CEA, -9.9999999E-38),
     (0x409E0652,       1.234568),
     (0xC09E0652,      -1.234568),
+    (0x7FFFFFFF,  1.7014118e+38),  # last two not from reference
+    (0xFFFFFFFF, -1.7014118e+38),
 ]
 
 tests = []

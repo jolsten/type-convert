@@ -8,6 +8,27 @@ signatures = [
 
 
 def func(value: np.uint32) -> np.float64:
+    r"""Convert uint to TI32
+
+    Interprets an unsigned integer as a Texas Instruments 32-bit Float and
+    returns an IEEE 64-bit Float.
+
+    Parameters
+    ----------
+    value : unsigned integer
+        Unsigned integer value of the data.
+
+    Returns
+    -------
+    np.float64
+        A float containing the interpretation of `value`.
+
+    Examples
+    --------
+    >>> out = func(0xFF800000)
+    >>> type(out), out
+    (<class 'numpy.float64'>, -1.0)
+    """
     # Reference:
     # https://www.ti.com/lit/an/spra400/spra400.pdf
     value = np.uint32(value)

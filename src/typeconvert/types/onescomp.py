@@ -1,6 +1,6 @@
 import numpy as np
 from numba import njit, vectorize
-from typeconverter.typing import UnsignedInteger, SignedInteger
+from ..typing import UnsignedInteger, SignedInteger
 
 signatures = [
     'i1(u1,u1)',

@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from itertools import zip_longest
-from typeconverter.types.dec32 import func, jfunc, ufunc
+from typeconvert.types.dec32 import func, jfunc, ufunc
 
 # https://pubs.usgs.gov/of/2005/1424/
 

@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from itertools import zip_longest
-from typeconverter.types.ibm64 import func, jfunc, ufunc
+from typeconvert.types.ibm64 import func, jfunc, ufunc
 
 # Reference:
 # https://en.wikipedia.org/wiki/IBM_hexadecimal_floating-point

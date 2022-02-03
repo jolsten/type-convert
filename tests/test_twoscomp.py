@@ -1,8 +1,8 @@
 import pytest
 import numpy as np
 from itertools import zip_longest
-from typeconverter.utils import bits_to_wordsize, mask
-from typeconverter.types.twoscomp import func, jfunc, ufunc
+from typeconvert.utils import bits_to_wordsize, mask
+from typeconvert.types.twoscomp import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
 TEST_CASES = {

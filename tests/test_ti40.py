@@ -1,8 +1,8 @@
 import pytest
 import numpy as np
 from itertools import zip_longest
-from typeconverter.types.ti40 import func, jfunc, ufunc
-from typeconverter.types.twoscomp import func as uint_to_twoscomp
+from typeconvert.types.ti40 import func, jfunc, ufunc
+from typeconvert.types.twoscomp import func as uint_to_twoscomp
 
 TEST_ARRAY_SIZE = 100
 

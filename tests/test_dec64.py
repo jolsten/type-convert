@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from itertools import zip_longest
-from typeconverter.types.dec64 import func, jfunc, ufunc
+from typeconvert.types.dec64 import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
 

@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from itertools import zip_longest
-from typeconverter.types.bcd import func, jfunc, ufunc
+from typeconvert.types.bcd import func, jfunc, ufunc
 
 # https://pubs.usgs.gov/of/2005/1424/
 TEST_ARRAY_SIZE = 100

@@ -1,8 +1,6 @@
 import pytest
 import numpy as np
-from numba import njit, vectorize
 from itertools import zip_longest
-
 from typeconverter.utils import bits_to_wordsize, mask
 from typeconverter.types.onescomp import func, jfunc, ufunc
 
@@ -55,7 +53,7 @@ TEST_CASES = {
 tests = []
 for size in TEST_CASES:
     for val_in, val_out in TEST_CASES[size]:
-        tests.append( (size, val_in, val_out) )
+        tests.append((size, val_in, val_out))
 tests += [(size, 0, 0) for size in np.arange(64)+1]
 tests += [(size, mask(size), -0) for size in np.arange(64)+1]
 
@@ -70,7 +68,8 @@ def test_func(size, val_in, val_out):
 @pytest.mark.parametrize('size, val_in, val_out', tests)
 def test_njit(size, val_in, val_out):
     size = np.uint8(size)
-    for bits, dtype in {8: np.uint8, 16: np.uint16, 32: np.uint32, 64: np.uint64}.items():
+    iter = {8: np.uint8, 16: np.uint16, 32: np.uint32, 64: np.uint64}
+    for bits, dtype in iter.items():
         if size <= bits:
             break
     val_in = dtype(val_in)
@@ -81,5 +80,8 @@ def test_njit(size, val_in, val_out):
 @pytest.mark.parametrize('size, val_in, val_out', tests)
 def test_vectorize(size, val_in, val_out):
     size = np.uint8(size)
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f'uint{bits_to_wordsize(size)}')
-    assert all([a==b for a, b in zip_longest(ufunc(data, size), [val_out] * TEST_ARRAY_SIZE)])
+    data = np.array(
+        [val_in] * TEST_ARRAY_SIZE, dtype=f'uint{bits_to_wordsize(size)}'
+    )
+    expected = [val_out] * TEST_ARRAY_SIZE
+    assert all([a == b for a, b in zip_longest(ufunc(data, size), expected)])

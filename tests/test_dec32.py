@@ -1,9 +1,6 @@
 import pytest
 import numpy as np
-from numba import njit, vectorize
 from itertools import zip_longest
-
-from typeconverter.utils import bits_to_wordsize, mask
 from typeconverter.types.dec32 import func, jfunc, ufunc
 
 TEST_ARRAY_SIZE = 100
@@ -16,9 +13,9 @@ tests = []
 for s in S:
     for e in E:
         for m in M:
-            val_in = np.uint32( (s<<31) + (e<<23) + m )
+            val_in = np.uint32((s << 31) + (e << 23) + m)
             val_out = (-1)**s * (m / 2**24) * 2**(e - 128)
-            tests.append( (val_in, pytest.approx(val_out)) )
+            tests.append((val_in, pytest.approx(val_out)))
 
 
 @pytest.mark.parametrize('val_in, val_out', tests)
@@ -37,5 +34,5 @@ def test_njit(val_in, val_out):
 def test_vectorize(val_in, val_out):
     print('ufunc')
     data = np.array([val_in] * TEST_ARRAY_SIZE)
-    ufunc(data)
-    assert all([a==b for a, b in zip_longest(ufunc(data), [val_out] * TEST_ARRAY_SIZE)])
+    expected = [val_out] * TEST_ARRAY_SIZE
+    assert all([a == b for a, b in zip_longest(ufunc(data), expected)])

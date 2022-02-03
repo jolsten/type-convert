@@ -5,6 +5,7 @@ signatures = [
     'f8(u4)',
 ]
 
+
 def func(value: np.uint32) -> np.float64:
     value = np.uint32(value)
 
@@ -17,6 +18,7 @@ def func(value: np.uint32) -> np.float64:
     M = np.float64(m) / np.float64(2**24)
 
     return np.float64(S * M * np.float64(2)**E)
+
 
 jfunc = njit(signatures)(func)
 ufunc = vectorize(signatures)(func)

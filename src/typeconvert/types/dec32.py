@@ -2,11 +2,11 @@ import numpy as np
 from numba import njit, vectorize
 
 signatures = [
-    'f4(u4)',
+    'f8(u4)',
 ]
 
 
-def func(value: np.uint32) -> np.float32:
+def func(value: np.uint32) -> np.float64:
     r"""Convert uint to DEC32
 
     Interprets an unsigned integer as a DEC 32-bit Float and
@@ -19,14 +19,14 @@ def func(value: np.uint32) -> np.float32:
 
     Returns
     -------
-    np.float32
+    np.float64
         A float containing the interpretation of `value`.
 
     Examples
     --------
     >>> out = func(0x409E0652)
     >>> type(out), out
-    (<class 'numpy.float32'>, 1.234568)
+    (<class 'numpy.float64'>, 1.234568)
     """
     value = np.uint32(value)
 
@@ -36,9 +36,9 @@ def func(value: np.uint32) -> np.float32:
 
     S = np.int8(-1) ** s
     E = np.int16(e) - np.int16(128)
-    M = np.float32(m) / np.float32(2**24) + np.float32(0.5)
+    M = np.float64(m) / np.float64(2**24) + np.float64(0.5)
 
-    return np.float32(S * M * np.float32(2)**E)
+    return np.float64(S * M * np.float64(2)**E)
 
 
 jfunc = njit(signatures)(func)

@@ -11,7 +11,7 @@ signatures = [
 
 
 def func(value: np.uint64) -> np.float64:
-    r"""Convert uint to 1750A32
+    r"""Convert uint to 1750A48
 
     Interprets an unsigned integer as a MIL-STD-1750A 48-bit Float and returns
     an IEEE 64-bit Float.

@@ -37,7 +37,9 @@ def func(value: UnsignedInteger, size: np.uint8) -> SignedInteger:
     if value >= 2**(size-1):
         pad_bits = np.uint8(64 - size)
         value = np.int64(np.uint64(value) << pad_bits) >> pad_bits
-    return value
+        return value
+    else:
+        return np.int64(value)
 
 
 jfunc = njit(signatures)(func)

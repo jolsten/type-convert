@@ -30,23 +30,33 @@ TEST_CASES = {
     ],
     16: [
         (0x0000,  0),
-        (0xFFFF,  0),
+        (0x7FFF, 2**15-1),
+        (0x8000, -2**15+1),
+        (0xFFFF, 0),
     ],
     24: [
         (0x000000,  0),
-        (0xFFFFFF,  0),
+        (0x7FFFFF, 2**23-1),
+        (0x800000, -2**23+1),
+        (0xFFFFFF, 0),
     ],
     32: [
         (0x00000000,  0),
-        (0xFFFFFFFF,  0),
+        (0x7FFFFFFF, 2**31-1),
+        (0x80000000, -2**31+1),
+        (0xFFFFFFFF, 0),
     ],
     48: [
         (0x000000000000,  0),
-        (0xFFFFFFFFFFFF,  0),
+        (0x7FFFFFFFFFFF, 2**47-1),
+        (0x800000000000, -2**47+1),
+        (0xFFFFFFFFFFFF, 0),
     ],
     64: [
         (0x0000000000000000,  0),
-        (0xFFFFFFFFFFFFFFFF,  0),
+        (0x7FFFFFFFFFFFFFFF, 2**63-1),
+        (0x8000000000000000, -2**63+1),
+        (0xFFFFFFFFFFFFFFFF, 0),
     ],
 }
 

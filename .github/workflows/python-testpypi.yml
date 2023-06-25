@@ -30,7 +30,7 @@ jobs:
         python -m build --sdist --wheel --outdir dist/ .
     - name: Check build 1
       run: >-
-        ls . -l
+        python -m setuptools_scm
     - name: Check build 2
       run: >-
         ls dist/ -l

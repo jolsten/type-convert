@@ -26,11 +26,19 @@ jobs:
 
     - name: Install pypa/build
       run: >-
-        python -m pip install build --user
+        python -m pip install build --user setuptools_scm setuptools
 
     - name: Build a binary wheel and a source tarball
       run: >-
         python -m build --sdist --wheel --outdir dist/ .
+
+    - name: Check setuptools_scm version number inference
+      run: >-
+        python -m setuptools_scm
+
+    - name: Check build 2
+      run: >-
+        ls dist/ -l
 
     - name: Publish distribution 📦 to Test PyPI
       uses: pypa/gh-action-pypi-publish@release/v1

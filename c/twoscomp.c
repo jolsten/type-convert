@@ -6,7 +6,7 @@
 #include <math.h>
 
 /*
- * multi_arg_twoscomp.c
+ * multi_arg_ufunc.c
  * This is the C code for creating your own
  * NumPy ufunc for a multiple argument, multiple
  * return value ufunc. The places where the
@@ -183,7 +183,7 @@ static void uint64_twoscomp(char **args, const npy_intp *dimensions,
 /*This a pointer to the above function*/
 PyUFuncGenericFunction funcs[4] = {&uint8_twoscomp, &uint16_twoscomp, &uint32_twoscomp, &uint64_twoscomp};
 
-/* These are the input and return dtypes of twoscomp.*/
+/* These are the input and return dtypes of ufunc.*/
 
 static char types[12] = {
     NPY_UINT8, NPY_UINT8, NPY_INT8,
@@ -194,7 +194,7 @@ static char types[12] = {
 
 static struct PyModuleDef moduledef = {
     PyModuleDef_HEAD_INIT,
-    "twoscomp",
+    "ufunc",
     NULL,
     -1,
     TwoscompMethods,
@@ -204,7 +204,7 @@ static struct PyModuleDef moduledef = {
     NULL
 };
 
-PyMODINIT_FUNC PyInit_twoscomp(void)
+PyMODINIT_FUNC PyInit_ufunc(void)
 {
     PyObject *m, *twoscomp, *d;
 
@@ -218,7 +218,7 @@ PyMODINIT_FUNC PyInit_twoscomp(void)
 
     twoscomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
                                     PyUFunc_None, "twoscomp",
-                                    "twoscomp_docstring", 0);
+                                    "ufunc_docstring", 0);
 
     d = PyModule_GetDict(m);
 

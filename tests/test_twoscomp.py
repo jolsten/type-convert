@@ -1,13 +1,7 @@
 import pytest
 import numpy as np
-from itertools import zip_longest
-from typeconvert.utils import bits_to_wordsize, mask
-from typeconvert_extensions.ufunc.twoscomp import twoscomp
-
-
-def size_hex(size: int) -> int:
-    return int(bits_to_wordsize(size) / 4)
-
+from typeconvert.utils import bits_to_wordsize
+from typeconvert_extensions.twoscomp.ufunc import twoscomp
 
 # Min length = 2
 # Max length = 64

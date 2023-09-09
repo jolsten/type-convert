@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel"]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel", "numpy"]
 
 [project]
 name = "typeconvert"
@@ -9,8 +9,7 @@ dynamic = ["version"]
 requires-python = ">= 3.7"
 license = {file = "LICENSE.md"}
 dependencies = [
-    "numba>=0.53",
-    "numpy>=1.19,<1.24",
+    "numpy",
 ]
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -33,7 +32,7 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["typeconvert"]
+include = ["typeconvert*"]
 
 [tool.setuptools_scm]
 

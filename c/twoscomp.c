@@ -1,0 +1,229 @@
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include "numpy/ndarraytypes.h"
+#include "numpy/ufuncobject.h"
+#include "numpy/halffloat.h"
+#include <math.h>
+
+/*
+ * multi_arg_twoscomp.c
+ * This is the C code for creating your own
+ * NumPy ufunc for a multiple argument, multiple
+ * return value ufunc. The places where the
+ * ufunc computation is carried out are marked
+ * with comments.
+ *
+ * Details explaining the Python-C API can be found under
+ * 'Extending and Embedding' and 'Python/C API' at
+ * docs.python.org.
+ */
+
+static PyMethodDef TwoscompMethods[] = {
+    {NULL, NULL, 0, NULL}
+};
+
+/* The loop definition must precede the PyMODINIT_FUNC. */
+
+static void uint8_twoscomp(char **args, const npy_intp *dimensions,
+                             const npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *in1 = args[0], *in2 = args[1];
+    char *out1 = args[2];
+    npy_intp in1_step = steps[0], in2_step = steps[1];
+    npy_intp out1_step = steps[2], out2_step = steps[3];
+    
+    union {
+        int8_t  s;
+        uint8_t u;
+    } tmp;
+    uint8_t size, pad_bits;
+    uint8_t max_positive_value;
+
+    size = *(uint8_t *)in2;
+    max_positive_value = ((uint8_t) (1 << (size-1))) - 1;
+
+    for (i = 0; i < n; i++) {
+        /* BEGIN main ufunc computation */
+        tmp.u = *(uint8_t *)in1;
+
+        if (tmp.u > max_positive_value) {
+            pad_bits = 8 - size;
+            tmp.u = tmp.u << pad_bits;
+            tmp.s = tmp.s >> pad_bits;
+        }
+
+        *((int8_t *)out1) = (int8_t) tmp.s;
+        /* END main ufunc computation */
+
+        in1 += in1_step;
+        in2 += in2_step;
+        out1 += out1_step;
+    }
+}
+
+static void uint16_twoscomp(char **args, const npy_intp *dimensions,
+                             const npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *in1 = args[0], *in2 = args[1];
+    char *out1 = args[2];
+    npy_intp in1_step = steps[0], in2_step = steps[1];
+    npy_intp out1_step = steps[2], out2_step = steps[3];
+    
+    union {
+        int16_t  s;
+        uint16_t u;
+    } tmp;
+    uint8_t size, pad_bits;
+    uint16_t max_positive_value;
+
+    size = *(uint8_t *)in2;
+    max_positive_value = ((uint16_t) (1 << (size-1))) - 1;
+
+    for (i = 0; i < n; i++) {
+        /* BEGIN main ufunc computation */
+        tmp.u = *(uint16_t *)in1;
+
+        if (tmp.u > max_positive_value) {
+            pad_bits = 16 - size;
+            tmp.u = tmp.u << pad_bits;
+            tmp.s = tmp.s >> pad_bits;
+        }
+
+        *((int16_t *)out1) = (int16_t) tmp.s;
+        /* END main ufunc computation */
+
+        in1 += in1_step;
+        in2 += in2_step;
+        out1 += out1_step;
+    }
+}
+
+static void uint32_twoscomp(char **args, const npy_intp *dimensions,
+                             const npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *in1 = args[0], *in2 = args[1];
+    char *out1 = args[2];
+    npy_intp in1_step = steps[0], in2_step = steps[1];
+    npy_intp out1_step = steps[2], out2_step = steps[3];
+    
+    union {
+        int32_t  s;
+        uint32_t u;
+    } tmp;
+    uint8_t size, pad_bits;
+    uint32_t max_positive_value;
+
+    size = *(uint8_t *)in2;
+    max_positive_value = ((uint32_t) (1 << (size-1))) - 1;
+
+    for (i = 0; i < n; i++) {
+        /* BEGIN main ufunc computation */
+        tmp.u = *(uint32_t *)in1;
+
+        if (tmp.u > max_positive_value) {
+            pad_bits = 32 - size;
+            tmp.u = tmp.u << pad_bits;
+            tmp.s = tmp.s >> pad_bits;
+        }
+
+        *((int32_t *)out1) = (int32_t) tmp.s;
+        /* END main ufunc computation */
+
+        in1 += in1_step;
+        in2 += in2_step;
+        out1 += out1_step;
+    }
+}
+
+static void uint64_twoscomp(char **args, const npy_intp *dimensions,
+                             const npy_intp *steps, void *data)
+{
+    npy_intp i;
+    npy_intp n = dimensions[0];
+    char *in1 = args[0], *in2 = args[1];
+    char *out1 = args[2];
+    npy_intp in1_step = steps[0], in2_step = steps[1];
+    npy_intp out1_step = steps[2], out2_step = steps[3];
+    
+    union {
+        int64_t  s;
+        uint64_t u;
+    } tmp;
+    uint8_t size, pad_bits;
+    uint64_t max_positive_value;
+
+    size = *(uint8_t *)in2;
+    max_positive_value = ((uint64_t) (1 << (size-1))) - 1;
+
+    for (i = 0; i < n; i++) {
+        /* BEGIN main ufunc computation */
+        tmp.u = *(uint64_t *)in1;
+
+        if (tmp.u > max_positive_value) {
+            pad_bits = 64 - size;
+            tmp.u = tmp.u << pad_bits;
+            tmp.s = tmp.s >> pad_bits;
+        }
+
+        *((int64_t *)out1) = (int64_t) tmp.s;
+        /* END main ufunc computation */
+
+        in1 += in1_step;
+        in2 += in2_step;
+        out1 += out1_step;
+    }
+}
+
+/*This a pointer to the above function*/
+PyUFuncGenericFunction funcs[4] = {&uint8_twoscomp, &uint16_twoscomp, &uint32_twoscomp, &uint64_twoscomp};
+
+/* These are the input and return dtypes of twoscomp.*/
+
+static char types[12] = {
+    NPY_UINT8, NPY_UINT8, NPY_INT8,
+    NPY_UINT16, NPY_UINT8, NPY_INT16,
+    NPY_UINT32, NPY_UINT8, NPY_INT32,
+    NPY_UINT64, NPY_UINT8, NPY_INT64,
+};
+
+static struct PyModuleDef moduledef = {
+    PyModuleDef_HEAD_INIT,
+    "twoscomp",
+    NULL,
+    -1,
+    TwoscompMethods,
+    NULL,
+    NULL,
+    NULL,
+    NULL
+};
+
+PyMODINIT_FUNC PyInit_twoscomp(void)
+{
+    PyObject *m, *twoscomp, *d;
+
+    import_array();
+    import_umath();
+
+    m = PyModule_Create(&moduledef);
+    if (!m) {
+        return NULL;
+    }
+
+    twoscomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
+                                    PyUFunc_None, "twoscomp",
+                                    "twoscomp_docstring", 0);
+
+    d = PyModule_GetDict(m);
+
+    PyDict_SetItemString(d, "twoscomp", twoscomp);
+    Py_DECREF(twoscomp);
+
+    return m;
+}

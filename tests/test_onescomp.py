@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 from itertools import zip_longest
 from typeconvert.utils import bits_to_wordsize, mask
-from typeconvert_extensions.func import onescomp as onescomp_func
+from typeconvert_ext.func import onescomp as onescomp_func
 
 # from typeconvert_extensions.ufunc import onescomp as onescomp_ufunc
 

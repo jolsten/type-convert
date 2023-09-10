@@ -1,8 +1,8 @@
 import pytest
 import numpy as np
 from typeconvert.utils import bits_to_wordsize
-from typeconvert_extensions.func import twoscomp as twoscomp_func
-from typeconvert_extensions.ufunc import twoscomp as twoscomp_ufunc
+from typeconvert_ext.func import twoscomp as twoscomp_func
+from typeconvert_ext.ufunc import twoscomp as twoscomp_ufunc
 
 # Min length = 2
 # Max length = 64

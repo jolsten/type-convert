@@ -8,7 +8,7 @@ extensions = [
 ]
 
 setup(
-    ext_package="typeconvert_extensions",
+    ext_package="typeconvert_ext",
     ext_modules=extensions,
     # include_dirs=[np.get_include()],
 )

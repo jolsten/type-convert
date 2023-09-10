@@ -16,9 +16,9 @@
  * hopefully, everywhere this gets used.
  */
 
-static PyMethodDef TwoscompMethods[] = {
-    {NULL, NULL, 0, NULL}
-};
+// static PyMethodDef TwoscompMethods[] = {
+//     {NULL, NULL, 0, NULL}
+// };
 
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
@@ -179,49 +179,49 @@ static void uint64_twoscomp(char **args, const npy_intp *dimensions,
 }
 
 /*This a pointer to the above function*/
-PyUFuncGenericFunction funcs[4] = {&uint8_twoscomp, &uint16_twoscomp, &uint32_twoscomp, &uint64_twoscomp};
+PyUFuncGenericFunction twoscomp_funcs[4] = {&uint8_twoscomp, &uint16_twoscomp, &uint32_twoscomp, &uint64_twoscomp};
 
 /* These are the input and return dtypes of ufunc.*/
 
-static char types[12] = {
+static char twoscomp_types[12] = {
     NPY_UINT8, NPY_UINT8, NPY_INT8,
     NPY_UINT16, NPY_UINT8, NPY_INT16,
     NPY_UINT32, NPY_UINT8, NPY_INT32,
     NPY_UINT64, NPY_UINT8, NPY_INT64,
 };
 
-static struct PyModuleDef moduledef = {
-    PyModuleDef_HEAD_INIT,
-    "ufunc",
-    NULL,
-    -1,
-    TwoscompMethods,
-    NULL,
-    NULL,
-    NULL,
-    NULL
-};
+// static struct PyModuleDef moduledef = {
+//     PyModuleDef_HEAD_INIT,
+//     "ufunc",
+//     NULL,
+//     -1,
+//     TwoscompMethods,
+//     NULL,
+//     NULL,
+//     NULL,
+//     NULL
+// };
 
-PyMODINIT_FUNC PyInit_ufunc(void)
-{
-    PyObject *m, *twoscomp, *d;
+// PyMODINIT_FUNC PyInit_ufunc(void)
+// {
+//     PyObject *m, *twoscomp, *d;
 
-    import_array();
-    import_umath();
+//     import_array();
+//     import_umath();
 
-    m = PyModule_Create(&moduledef);
-    if (!m) {
-        return NULL;
-    }
+//     m = PyModule_Create(&moduledef);
+//     if (!m) {
+//         return NULL;
+//     }
 
-    twoscomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
-                                    PyUFunc_None, "twoscomp",
-                                    "ufunc_docstring", 0);
+//     twoscomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
+//                                     PyUFunc_None, "twoscomp",
+//                                     "ufunc_docstring", 0);
 
-    d = PyModule_GetDict(m);
+//     d = PyModule_GetDict(m);
 
-    PyDict_SetItemString(d, "twoscomp", twoscomp);
-    Py_DECREF(twoscomp);
+//     PyDict_SetItemString(d, "twoscomp", twoscomp);
+//     Py_DECREF(twoscomp);
 
-    return m;
-}
+//     return m;
+// }

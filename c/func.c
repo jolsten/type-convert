@@ -1,6 +1,8 @@
 #include <Python.h>
 #include <math.h>
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 static signed long long twoscomp(unsigned long long uint,  unsigned char size) {
     unsigned char max_pos_val = 1;
     unsigned char pad_bits;

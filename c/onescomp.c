@@ -9,16 +9,16 @@
  * onescomp_ufunc.c
  * This is the C code for a numpy ufunc converting an 
  * arbitrary-length (2-64 bits) unsigned integer to that
- * binary value's representation as a twos-complement number.
+ * binary value's representation as a ones-complement number.
  * 
  * This method only works on systems which use arithmetic
  * right shift on negative signed integers. Which is,
  * hopefully, everywhere this gets used.
  */
 
-static PyMethodDef TwoscompMethods[] = {
-    {NULL, NULL, 0, NULL}
-};
+// static PyMethodDef OnescompMethods[] = {
+//     {NULL, NULL, 0, NULL}
+// };
 
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
@@ -191,49 +191,49 @@ static void uint64_onescomp(char **args, const npy_intp *dimensions,
 }
 
 /*This a pointer to the above function*/
-PyUFuncGenericFunction funcs[4] = {&uint8_onescomp, &uint16_onescomp, &uint32_onescomp, &uint64_onescomp};
+PyUFuncGenericFunction onescomp_funcs[4] = {&uint8_onescomp, &uint16_onescomp, &uint32_onescomp, &uint64_onescomp};
 
 /* These are the input and return dtypes of ufunc.*/
 
-static char types[12] = {
+static char onescomp_types[12] = {
     NPY_UINT8, NPY_UINT8, NPY_INT8,
     NPY_UINT16, NPY_UINT8, NPY_INT16,
     NPY_UINT32, NPY_UINT8, NPY_INT32,
     NPY_UINT64, NPY_UINT8, NPY_INT64,
 };
 
-static struct PyModuleDef moduledef = {
-    PyModuleDef_HEAD_INIT,
-    "ufunc",
-    NULL,
-    -1,
-    TwoscompMethods,
-    NULL,
-    NULL,
-    NULL,
-    NULL
-};
+// static struct PyModuleDef moduledef = {
+//     PyModuleDef_HEAD_INIT,
+//     "ufunc",
+//     NULL,
+//     -1,
+//     OnescompMethods,
+//     NULL,
+//     NULL,
+//     NULL,
+//     NULL
+// };
 
-PyMODINIT_FUNC PyInit_ufunc(void)
-{
-    PyObject *m, *onescomp, *d;
+// PyMODINIT_FUNC PyInit_ufunc(void)
+// {
+//     PyObject *m, *onescomp, *d;
 
-    import_array();
-    import_umath();
+//     import_array();
+//     import_umath();
 
-    m = PyModule_Create(&moduledef);
-    if (!m) {
-        return NULL;
-    }
+//     m = PyModule_Create(&moduledef);
+//     if (!m) {
+//         return NULL;
+//     }
 
-    onescomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
-                                    PyUFunc_None, "onescomp",
-                                    "ufunc_docstring", 0);
+//     onescomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
+//                                     PyUFunc_None, "onescomp",
+//                                     "ufunc_docstring", 0);
 
-    d = PyModule_GetDict(m);
+//     d = PyModule_GetDict(m);
 
-    PyDict_SetItemString(d, "onescomp", onescomp);
-    Py_DECREF(onescomp);
+//     PyDict_SetItemString(d, "onescomp", onescomp);
+//     Py_DECREF(onescomp);
 
-    return m;
-}
+//     return m;
+// }

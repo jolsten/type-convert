@@ -16,10 +16,7 @@
  * hopefully, everywhere this gets used.
  */
 
-// static PyMethodDef OnescompMethods[] = {
-//     {NULL, NULL, 0, NULL}
-// };
-
+/* Numpy Ufunc Definition Begins Here */
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
 static void uint8_onescomp(char **args, const npy_intp *dimensions,
@@ -191,6 +188,7 @@ static void uint64_onescomp(char **args, const npy_intp *dimensions,
 }
 
 /*This a pointer to the above function*/
+
 PyUFuncGenericFunction onescomp_funcs[4] = {&uint8_onescomp, &uint16_onescomp, &uint32_onescomp, &uint64_onescomp};
 
 /* These are the input and return dtypes of ufunc.*/
@@ -201,39 +199,3 @@ static char onescomp_types[12] = {
     NPY_UINT32, NPY_UINT8, NPY_INT32,
     NPY_UINT64, NPY_UINT8, NPY_INT64,
 };
-
-// static struct PyModuleDef moduledef = {
-//     PyModuleDef_HEAD_INIT,
-//     "ufunc",
-//     NULL,
-//     -1,
-//     OnescompMethods,
-//     NULL,
-//     NULL,
-//     NULL,
-//     NULL
-// };
-
-// PyMODINIT_FUNC PyInit_ufunc(void)
-// {
-//     PyObject *m, *onescomp, *d;
-
-//     import_array();
-//     import_umath();
-
-//     m = PyModule_Create(&moduledef);
-//     if (!m) {
-//         return NULL;
-//     }
-
-//     onescomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
-//                                     PyUFunc_None, "onescomp",
-//                                     "ufunc_docstring", 0);
-
-//     d = PyModule_GetDict(m);
-
-//     PyDict_SetItemString(d, "onescomp", onescomp);
-//     Py_DECREF(onescomp);
-
-//     return m;
-// }

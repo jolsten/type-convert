@@ -1,7 +1,6 @@
 import pytest
 import numpy as np
-from itertools import zip_longest
-from typeconvert_ext.func import milstd1750a32 as func
+from typeconvert.func import milstd1750a32 as func
 
 TEST_ARRAY_SIZE = 100
 TEST_CASES = [

@@ -16,10 +16,6 @@
  * hopefully, everywhere this gets used.
  */
 
-// static PyMethodDef TwoscompMethods[] = {
-//     {NULL, NULL, 0, NULL}
-// };
-
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
 static void uint8_twoscomp(char **args, const npy_intp *dimensions,

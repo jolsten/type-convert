@@ -1,8 +1,8 @@
 import pytest
 import numpy as np
 from typeconvert.utils import bits_to_wordsize
-from typeconvert_ext.func import twoscomp as twoscomp_func
-from typeconvert_ext.ufunc import twoscomp as twoscomp_ufunc
+from typeconvert_ext.func import twoscomp as func
+from typeconvert_ext.ufunc import twoscomp as ufunc
 
 # Min length = 2
 # Max length = 64
@@ -72,59 +72,59 @@ for size in TEST_CASES:
 
 @pytest.mark.parametrize("size, val_in, val_out", tests)
 def test_func_specific_cases(size, val_in, val_out):
-    assert twoscomp_func(val_in, size) == val_out
+    assert func(val_in, size) == val_out
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_func_zero(size):
     val_in, val_out = 0, 0
-    assert twoscomp_func(val_in, size) == val_out
+    assert func(val_in, size) == val_out
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_func_min_positive(size):
     val_in, val_out = 1, 1
-    assert twoscomp_func(val_in, size) == val_out
+    assert func(val_in, size) == val_out
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_func_max_positive(size):
     val_in = 2 ** (size - 1) - 1
     val_out = val_in
-    assert twoscomp_func(val_in, size) == val_out
+    assert func(val_in, size) == val_out
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_func_min_negative(size):
     val_in, val_out = 2**size - 1, -1
-    assert twoscomp_func(val_in, size) == val_out
+    assert func(val_in, size) == val_out
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_func_max_negative(size):
     val_in = 1 << (size - 1)
     val_out = -(2 ** (size - 1))
-    assert twoscomp_func(val_in, size) == val_out
+    assert func(val_in, size) == val_out
 
 
 @pytest.mark.parametrize("size, val_in, val_out", tests)
 def test_ufunc_specific_cases(size, val_in, val_out):
     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(twoscomp_ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_ufunc_zero(size):
     val_in, val_out = 0, 0
     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(twoscomp_ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_ufunc_min_positive(size):
     val_in, val_out = 1, 1
     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(twoscomp_ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
@@ -132,14 +132,14 @@ def test_ufunc_max_positive(size):
     val_in = 2 ** (size - 1) - 1
     val_out = val_in
     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(twoscomp_ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
 def test_ufunc_min_negative(size):
     val_in, val_out = 2**size - 1, -1
     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(twoscomp_ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
 
 
 @pytest.mark.parametrize("size", ALL_SIZES)
@@ -147,4 +147,4 @@ def test_ufunc_max_negative(size):
     val_in = 1 << (size - 1)
     val_out = -(2 ** (size - 1))
     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(twoscomp_ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE

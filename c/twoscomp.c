@@ -6,16 +6,14 @@
 #include <math.h>
 
 /*
- * multi_arg_ufunc.c
- * This is the C code for creating your own
- * NumPy ufunc for a multiple argument, multiple
- * return value ufunc. The places where the
- * ufunc computation is carried out are marked
- * with comments.
- *
- * Details explaining the Python-C API can be found under
- * 'Extending and Embedding' and 'Python/C API' at
- * docs.python.org.
+ * twoscomp_ufunc.c
+ * This is the C code for a numpy ufunc converting an 
+ * arbitrary-length (2-64 bits) unsigned integer to that
+ * binary value's representation as a twos-complement number.
+ * 
+ * This method only works on systems which use arithmetic
+ * right shift on negative signed integers. Which is,
+ * hopefully, everywhere this gets used.
  */
 
 static PyMethodDef TwoscompMethods[] = {

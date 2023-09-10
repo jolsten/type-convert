@@ -3,7 +3,8 @@ import numpy as np
 
 # extensions = [Extension("typeconvert.twoscomp", ["typeconvert/twoscomp" + ext])]
 extensions = [
-    Extension("twoscomp.ufunc", ["c/twoscomp.c"], include_dirs=[np.get_include()])
+    Extension("func", ["c/func.c"], include_dirs=[np.get_include()]),
+    Extension("ufunc", ["c/twoscomp.c"], include_dirs=[np.get_include()]),
 ]
 
 setup(

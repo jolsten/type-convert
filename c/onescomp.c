@@ -2,7 +2,6 @@
 #include <Python.h>
 #include "numpy/ndarraytypes.h"
 #include "numpy/ufuncobject.h"
-#include "numpy/halffloat.h"
 #include <math.h>
 
 /*
@@ -27,7 +26,7 @@ static void uint8_onescomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int8_t  s;
@@ -69,7 +68,7 @@ static void uint16_onescomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int16_t  s;
@@ -111,7 +110,7 @@ static void uint32_onescomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int32_t  s;
@@ -153,7 +152,7 @@ static void uint64_onescomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int64_t  s;

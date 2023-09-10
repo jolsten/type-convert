@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 from typeconvert.func import milstd1750a48 as func
+from typeconvert.ufunc import milstd1750a48 as ufunc
 
 TEST_ARRAY_SIZE = 100
 TEST_CASES = [
@@ -27,9 +28,10 @@ def test_func(val_in, val_out):
     assert func(val_in) == val_out
 
 
-# @pytest.mark.parametrize("val_in, val_out", tests)
-# def test_vectorize(val_in, val_out):
-#     print("ufunc")
-#     data = np.array([val_in] * TEST_ARRAY_SIZE, dtype='>u8')
-#     expected = [val_out] * TEST_ARRAY_SIZE
-#     assert all([a == b for a, b in zip_longest(ufunc(data), expected)])
+@pytest.mark.parametrize("val_in, val_out", tests)
+def test_ufunc(val_in, val_out):
+    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=">u8")
+    expected = [val_out] * TEST_ARRAY_SIZE
+    result = ufunc(data)
+    print(f"{data[0]:08x} -> {result[0]}")
+    assert list(result) == expected

@@ -1,6 +1,8 @@
 #include <Python.h>
 #include "./onescomp.c"
 #include "./twoscomp.c"
+#include "./milstd1750a32.c"
+#include "./milstd1750a48.c"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
@@ -45,6 +47,18 @@ PyMODINIT_FUNC PyInit_ufunc(void)
     );
     PyDict_SetItemString(d, "twoscomp", twoscomp);
     Py_DECREF(twoscomp);
+
+    PyObject *milstd1750a32 = PyUFunc_FromFuncAndData(
+        milstd1750a32_funcs, NULL, milstd1750a32_types, 1, 1, 1, PyUFunc_None, "milstd1750a32", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "milstd1750a32", milstd1750a32);
+    Py_DECREF(milstd1750a32);
+
+    PyObject *milstd1750a48 = PyUFunc_FromFuncAndData(
+        milstd1750a48_funcs, NULL, milstd1750a48_types, 1, 1, 1, PyUFunc_None, "milstd1750a48", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "milstd1750a48", milstd1750a48);
+    Py_DECREF(milstd1750a48);
 
     return m;
 }

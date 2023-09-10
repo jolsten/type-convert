@@ -2,7 +2,6 @@
 #include <Python.h>
 #include "numpy/ndarraytypes.h"
 #include "numpy/ufuncobject.h"
-#include "numpy/halffloat.h"
 #include <math.h>
 
 /*
@@ -26,7 +25,7 @@ static void uint8_twoscomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int8_t  s;
@@ -65,7 +64,7 @@ static void uint16_twoscomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int16_t  s;
@@ -104,7 +103,7 @@ static void uint32_twoscomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int32_t  s;
@@ -143,7 +142,7 @@ static void uint64_twoscomp(char **args, const npy_intp *dimensions,
     char *in1 = args[0], *in2 = args[1];
     char *out1 = args[2];
     npy_intp in1_step = steps[0], in2_step = steps[1];
-    npy_intp out1_step = steps[2], out2_step = steps[3];
+    npy_intp out1_step = steps[2];
     
     union {
         int64_t  s;
@@ -185,39 +184,3 @@ static char twoscomp_types[12] = {
     NPY_UINT32, NPY_UINT8, NPY_INT32,
     NPY_UINT64, NPY_UINT8, NPY_INT64,
 };
-
-// static struct PyModuleDef moduledef = {
-//     PyModuleDef_HEAD_INIT,
-//     "ufunc",
-//     NULL,
-//     -1,
-//     TwoscompMethods,
-//     NULL,
-//     NULL,
-//     NULL,
-//     NULL
-// };
-
-// PyMODINIT_FUNC PyInit_ufunc(void)
-// {
-//     PyObject *m, *twoscomp, *d;
-
-//     import_array();
-//     import_umath();
-
-//     m = PyModule_Create(&moduledef);
-//     if (!m) {
-//         return NULL;
-//     }
-
-//     twoscomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
-//                                     PyUFunc_None, "twoscomp",
-//                                     "ufunc_docstring", 0);
-
-//     d = PyModule_GetDict(m);
-
-//     PyDict_SetItemString(d, "twoscomp", twoscomp);
-//     Py_DECREF(twoscomp);
-
-//     return m;
-// }

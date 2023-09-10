@@ -6,7 +6,7 @@
 #include <math.h>
 
 /*
- * twoscomp_ufunc.c
+ * onescomp_ufunc.c
  * This is the C code for a numpy ufunc converting an 
  * arbitrary-length (2-64 bits) unsigned integer to that
  * binary value's representation as a twos-complement number.
@@ -22,7 +22,7 @@ static PyMethodDef TwoscompMethods[] = {
 
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
-static void uint8_twoscomp(char **args, const npy_intp *dimensions,
+static void uint8_onescomp(char **args, const npy_intp *dimensions,
                              const npy_intp *steps, void *data)
 {
     npy_intp i;
@@ -40,7 +40,7 @@ static void uint8_twoscomp(char **args, const npy_intp *dimensions,
     uint8_t max_pos_val;
 
     size = *(uint8_t *)in2;
-    max_pos_val = ((uint8_t) (1 << (size-1))) - 1;
+    max_pos_val = (((uint8_t) 1) << (size-1)) - 1;
 
     for (i = 0; i < n; i++) {
         /* BEGIN main ufunc computation */
@@ -50,6 +50,9 @@ static void uint8_twoscomp(char **args, const npy_intp *dimensions,
             pad_bits = 8 - size;
             tmp.u = tmp.u << pad_bits;
             tmp.s = tmp.s >> pad_bits;
+
+            // add one if negative to convert to 1c
+            tmp.s += 1;
         }
 
         *((int8_t *)out1) = (int8_t) tmp.s;
@@ -61,7 +64,7 @@ static void uint8_twoscomp(char **args, const npy_intp *dimensions,
     }
 }
 
-static void uint16_twoscomp(char **args, const npy_intp *dimensions,
+static void uint16_onescomp(char **args, const npy_intp *dimensions,
                              const npy_intp *steps, void *data)
 {
     npy_intp i;
@@ -79,7 +82,7 @@ static void uint16_twoscomp(char **args, const npy_intp *dimensions,
     uint16_t max_pos_val;
 
     size = *(uint8_t *)in2;
-    max_pos_val = ((uint16_t) (1 << (size-1))) - 1;
+    max_pos_val = (((uint16_t) 1) << (size-1)) - 1;
 
     for (i = 0; i < n; i++) {
         /* BEGIN main ufunc computation */
@@ -89,6 +92,9 @@ static void uint16_twoscomp(char **args, const npy_intp *dimensions,
             pad_bits = 16 - size;
             tmp.u = tmp.u << pad_bits;
             tmp.s = tmp.s >> pad_bits;
+
+            // add one if negative to convert to 1c
+            tmp.s += 1;
         }
 
         *((int16_t *)out1) = (int16_t) tmp.s;
@@ -100,7 +106,7 @@ static void uint16_twoscomp(char **args, const npy_intp *dimensions,
     }
 }
 
-static void uint32_twoscomp(char **args, const npy_intp *dimensions,
+static void uint32_onescomp(char **args, const npy_intp *dimensions,
                              const npy_intp *steps, void *data)
 {
     npy_intp i;
@@ -118,7 +124,7 @@ static void uint32_twoscomp(char **args, const npy_intp *dimensions,
     uint32_t max_pos_val;
 
     size = *(uint8_t *)in2;
-    max_pos_val = ((uint32_t) (1 << (size-1))) - 1;
+    max_pos_val = (((uint32_t) 1) << (size-1)) - 1;
 
     for (i = 0; i < n; i++) {
         /* BEGIN main ufunc computation */
@@ -128,6 +134,9 @@ static void uint32_twoscomp(char **args, const npy_intp *dimensions,
             pad_bits = 32 - size;
             tmp.u = tmp.u << pad_bits;
             tmp.s = tmp.s >> pad_bits;
+
+            // add one if negative to convert to 1c
+            tmp.s += 1;
         }
 
         *((int32_t *)out1) = (int32_t) tmp.s;
@@ -139,7 +148,7 @@ static void uint32_twoscomp(char **args, const npy_intp *dimensions,
     }
 }
 
-static void uint64_twoscomp(char **args, const npy_intp *dimensions,
+static void uint64_onescomp(char **args, const npy_intp *dimensions,
                              const npy_intp *steps, void *data)
 {
     npy_intp i;
@@ -157,7 +166,7 @@ static void uint64_twoscomp(char **args, const npy_intp *dimensions,
     uint64_t max_pos_val;
 
     size = *(uint8_t *)in2;
-    max_pos_val = ((uint64_t) (1 << (size-1))) - 1;
+    max_pos_val = (((uint64_t) 1) << (size-1)) - 1;
 
     for (i = 0; i < n; i++) {
         /* BEGIN main ufunc computation */
@@ -167,6 +176,9 @@ static void uint64_twoscomp(char **args, const npy_intp *dimensions,
             pad_bits = 64 - size;
             tmp.u = tmp.u << pad_bits;
             tmp.s = tmp.s >> pad_bits;
+
+            // add one if negative to convert to 1c
+            tmp.s += 1;
         }
 
         *((int64_t *)out1) = (int64_t) tmp.s;
@@ -179,7 +191,7 @@ static void uint64_twoscomp(char **args, const npy_intp *dimensions,
 }
 
 /*This a pointer to the above function*/
-PyUFuncGenericFunction funcs[4] = {&uint8_twoscomp, &uint16_twoscomp, &uint32_twoscomp, &uint64_twoscomp};
+PyUFuncGenericFunction funcs[4] = {&uint8_onescomp, &uint16_onescomp, &uint32_onescomp, &uint64_onescomp};
 
 /* These are the input and return dtypes of ufunc.*/
 
@@ -204,7 +216,7 @@ static struct PyModuleDef moduledef = {
 
 PyMODINIT_FUNC PyInit_ufunc(void)
 {
-    PyObject *m, *twoscomp, *d;
+    PyObject *m, *onescomp, *d;
 
     import_array();
     import_umath();
@@ -214,14 +226,14 @@ PyMODINIT_FUNC PyInit_ufunc(void)
         return NULL;
     }
 
-    twoscomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
-                                    PyUFunc_None, "twoscomp",
+    onescomp = PyUFunc_FromFuncAndData(funcs, NULL, types, 4, 2, 1,
+                                    PyUFunc_None, "onescomp",
                                     "ufunc_docstring", 0);
 
     d = PyModule_GetDict(m);
 
-    PyDict_SetItemString(d, "twoscomp", twoscomp);
-    Py_DECREF(twoscomp);
+    PyDict_SetItemString(d, "onescomp", onescomp);
+    Py_DECREF(onescomp);
 
     return m;
 }

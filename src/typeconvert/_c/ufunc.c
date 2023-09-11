@@ -1,8 +1,10 @@
 #include <Python.h>
+#include "./utils.c"
 #include "./onescomp.c"
 #include "./twoscomp.c"
 #include "./milstd1750a32.c"
 #include "./milstd1750a48.c"
+#include "./ti32.c"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
@@ -59,6 +61,12 @@ PyMODINIT_FUNC PyInit_ufunc(void)
     );
     PyDict_SetItemString(d, "milstd1750a48", milstd1750a48);
     Py_DECREF(milstd1750a48);
+
+    PyObject *ti32 = PyUFunc_FromFuncAndData(
+        ti32_funcs, NULL, ti32_types, 1, 1, 1, PyUFunc_None, "ti32", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "ti32", ti32);
+    Py_DECREF(ti32);
 
     return m;
 }

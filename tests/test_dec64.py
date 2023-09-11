@@ -1,7 +1,7 @@
 import pytest
-from typeconvert.py.func import dec64 as py_func
-from typeconvert.py.ufunc import dec64 as py_ufunc
-from .conftest import SpecificCasesBase
+from typeconvert._py.func import dec64 as py_func
+from typeconvert._py.ufunc import dec64 as py_ufunc
+from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 TEST_CASES = [
     (0x4080000000000000, 1.000000000000000),
@@ -29,6 +29,7 @@ class TestSpecificCases(SpecificCasesBase):
     # def test_c_func(self, val_in, val_out):
     #     assert c_func(val_in) == val_out
 
+    @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
     def test_py_ufunc(self, val_in, val_out):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE

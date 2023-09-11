@@ -2,8 +2,8 @@ from setuptools import Extension, setup
 import numpy as np
 
 extensions = [
-    Extension("func", ["c/func.c"], include_dirs=[np.get_include()]),
-    Extension("ufunc", ["c/ufunc.c"], include_dirs=[np.get_include()]),
+    Extension("func", ["src/typeconvert/_c/func.c"], include_dirs=[np.get_include()]),
+    Extension("ufunc", ["src/typeconvert/_c/ufunc.c"], include_dirs=[np.get_include()]),
 ]
 
 setup(

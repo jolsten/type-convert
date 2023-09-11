@@ -1,6 +1,9 @@
+import packaging.version as pp
 from typing import Optional
 import numpy as np
 from numpy.typing import DTypeLike
+
+NPY_CAST_SAFE = pp.parse(np.__version__) >= pp.parse("1.24")
 
 
 def bits_to_wordsize(size: np.uint8) -> np.uint8:

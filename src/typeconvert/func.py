@@ -1,5 +1,5 @@
 from .utils import validate_unsigned_integer
-from typeconvert_ext.func import (
+from typeconvert._c.func import (
     onescomp as _onescomp,
     twoscomp as _twoscomp,
     milstd1750a32 as _milstd1750a32,

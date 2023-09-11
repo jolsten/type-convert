@@ -3,7 +3,6 @@
 #include "numpy/ndarraytypes.h"
 #include "numpy/ufuncobject.h"
 #include <math.h>
-#include "func.c"
 
 /*
  * twoscomp_ufunc.c

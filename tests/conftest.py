@@ -1,8 +1,5 @@
-from typing import Any, Optional
 import numpy as np
-from typeconvert.utils import _bits_to_dtype
-
-TEST_ARRAY_SIZE = 100
+from typeconvert.utils import _bits_to_dtype, NPY_CAST_SAFE
 
 
 class SpecificCasesBase:

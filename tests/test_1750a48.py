@@ -1,10 +1,10 @@
 import pytest
 import numpy as np
-from typeconvert.py.func import milstd1750a48 as py_func
-from typeconvert.py.ufunc import milstd1750a48 as py_ufunc
-from typeconvert.c.func import milstd1750a48 as c_func
-from typeconvert.c.ufunc import milstd1750a48 as c_ufunc
-from .conftest import SpecificCasesBase
+from typeconvert._py.func import milstd1750a48 as py_func
+from typeconvert._py.ufunc import milstd1750a48 as py_ufunc
+from typeconvert._c.func import milstd1750a48 as c_func
+from typeconvert._c.ufunc import milstd1750a48 as c_ufunc
+from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 TEST_CASES = [
     (0x4000007F0000, 0.5 * 2**127),
@@ -30,6 +30,7 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_func(self, val_in, val_out):
         assert c_func(val_in) == val_out
 
+    @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
     def test_py_ufunc(self, val_in, val_out):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE

@@ -3,10 +3,10 @@ from numba import njit, vectorize
 from ..typing import UnsignedInteger, SignedInteger
 
 signatures = [
-    'i1(u1,u1)',
-    'i2(u2,u1)',
-    'i4(u4,u1)',
-    'i8(u8,u1)',
+    "i1(u1,u1)",
+    "i2(u2,u1)",
+    "i4(u4,u1)",
+    "i8(u8,u1)",
 ]
 
 
@@ -34,9 +34,9 @@ def func(value: UnsignedInteger, size: np.uint8) -> SignedInteger:
     (<class 'numpy.int64'>, -1)
     """
     value = np.uint64(value)
-    if value >= 2**(size-1):
+    if value >= 2 ** (size - 1):
         pad_bits = np.uint8(64 - size)
-        value = np.int64(np.uint64(value) << pad_bits) >> pad_bits
+        value = np.int64(value << pad_bits) >> pad_bits
         return value
     else:
         return np.int64(value)

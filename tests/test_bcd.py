@@ -1,8 +1,8 @@
 import pytest
 import numpy as np
-from typeconvert.py.func import bcd as py_func
-from typeconvert.py.ufunc import bcd as py_ufunc
-from .conftest import SpecificCasesBase
+from typeconvert._py.func import bcd as py_func
+from typeconvert._py.ufunc import bcd as py_ufunc
+from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 # https://pubs.usgs.gov/of/2005/1424/
 digits = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=np.uint8)
@@ -26,6 +26,7 @@ class TestSpecificCases(SpecificCasesBase):
     # def test_c_func(self, val_in, val_out):
     #     assert c_func(val_in) == val_out
 
+    @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
     def test_py_ufunc(self, val_in, val_out):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE

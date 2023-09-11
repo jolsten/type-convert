@@ -1,10 +1,10 @@
+from .utils import validate_unsigned_integer
 from typeconvert_ext.func import (
     onescomp as _onescomp,
     twoscomp as _twoscomp,
     milstd1750a32 as _milstd1750a32,
     milstd1750a48 as _milstd1750a48,
 )
-from .utils import validate_unsigned_integer
 
 
 def onescomp(value: int, size: int) -> int:

@@ -1,11 +1,25 @@
 import numpy as np
-from typeconvert_ext.ufunc import (
-    onescomp as _onescomp,
-    twoscomp as _twoscomp,
-    milstd1750a32 as _milstd1750a32,
-    milstd1750a48 as _milstd1750a48,
-)
 from .utils import validate_unsigned_integer
+
+try:
+    from typeconvert_ext.ufunc import onescomp as _onescomp
+except ImportError:
+    from typeconvert.py.onescomp import ufunc as _onescomp
+
+try:
+    from typeconvert_ext.ufunc import twoscomp as _twoscomp
+except ImportError:
+    from typeconvert.py.twoscomp import ufunc as _twoscomp
+
+try:
+    from typeconvert_ext.ufunc import milstd1750a32 as _milstd1750a32
+except ImportError:
+    from typeconvert.py.milstd1750a32 import ufunc as _milstd1750a32
+
+try:
+    from typeconvert_ext.ufunc import milstd1750a48 as _milstd1750a48
+except ImportError:
+    from typeconvert.py.milstd1750a48 import ufunc as _milstd1750a48
 
 
 def onescomp(data: np.ndarray, size: int) -> np.ndarray:

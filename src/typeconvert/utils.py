@@ -1,5 +1,6 @@
 from typing import Optional
 import numpy as np
+from numpy.typing import DTypeLike
 
 
 def bits_to_wordsize(size: np.uint8) -> np.uint8:
@@ -7,6 +8,10 @@ def bits_to_wordsize(size: np.uint8) -> np.uint8:
         if size <= word_size:
             return word_size
     return 64
+
+
+def _bits_to_dtype(size: int) -> DTypeLike:
+    return f"uint{bits_to_wordsize(size)}"
 
 
 def mask(size: int) -> int:

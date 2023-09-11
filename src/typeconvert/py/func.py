@@ -1,0 +1,12 @@
+from .onescomp import func as onescomp
+from .twoscomp import func as twoscomp
+from .milstd1750a32 import func as milstd1750a32
+from .milstd1750a48 import func as milstd1750a48
+from .ti32 import func as ti32
+from .ti40 import func as ti40
+from .bcd import func as bcd
+from .dec32 import func as dec32
+from .dec64 import func as dec64
+from .dec64g import func as dec64g
+from .ibm32 import func as ibm32
+from .ibm64 import func as ibm64

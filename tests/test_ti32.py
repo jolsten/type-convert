@@ -1,13 +1,13 @@
 import pytest
 import numpy as np
-from itertools import zip_longest
-from typeconvert.types.ti32 import func, jfunc, ufunc
+from typeconvert.py.func import ti32 as py_func
+from typeconvert.py.ufunc import ti32 as py_ufunc
+from .conftest import SpecificCasesBase
 
-TEST_ARRAY_SIZE = 100
 # References:
 # https://www.ti.com/lit/an/spra400/spra400.pdf
 # https://stackoverflow.com/questions/64687130/convert-ti-tms320c30-32-bits-float-to-ieee-float-in-python
-TEST_CASES = (
+TEST_FROM_COMPONENTS = (
     (0x7F, 0, 0b11111111111111111111111, (2 - 2**-23) * 2**127),
     (0x7F, 0, 0b11111111111111111111110, (2 - 2**-22) * 2**127),
     (0x7F, 0, 0b11111111111111111111101, (2 - 2**-21 + 2**-23) * 2**127),
@@ -76,28 +76,25 @@ TEST_CASES = (
     (0x7F, 1, 0b00000000000000000000000, -(2**128)),
 )
 
-tests = []
-for e, s, m, val_out in TEST_CASES:
+TEST_CASES = []
+for e, s, m, val_out in TEST_FROM_COMPONENTS:
     val_in = np.uint32((e << 24) + (s << 23) + m)
-    tests.append((val_in, pytest.approx(val_out)))
+    TEST_CASES.append((val_in, pytest.approx(val_out)))
+SIZE = 32
 
 
-@pytest.mark.parametrize("val_in, val_out", tests)
-def test_func(val_in, val_out):
-    print("func")
-    print(f"val_in = {val_in:08x}")
-    assert func(val_in) == val_out
+@pytest.mark.parametrize("val_in, val_out", TEST_CASES)
+class TestSpecificCases(SpecificCasesBase):
+    def test_py_func(self, val_in, val_out):
+        assert py_func(val_in) == val_out
 
+    # def test_c_func(self, val_in, val_out):
+    #     assert c_func(val_in) == val_out
 
-@pytest.mark.parametrize("val_in, val_out", tests)
-def test_njit(val_in, val_out):
-    print("jfunc", val_in, val_out)
-    assert jfunc(val_in) == val_out
+    def test_py_ufunc(self, val_in, val_out):
+        data = self.make_ndarray(val_in, SIZE)
+        assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
-
-@pytest.mark.parametrize("val_in, val_out", tests)
-def test_vectorize(val_in, val_out):
-    print("ufunc")
-    data = np.array([val_in] * TEST_ARRAY_SIZE)
-    expected = [val_out] * TEST_ARRAY_SIZE
-    assert all([a == b for a, b in zip_longest(ufunc(data), expected)])
+    # def test_c_ufunc(self, val_in, val_out):
+    #     data = self.make_ndarray(val_in, SIZE)
+    #     assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE

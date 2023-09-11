@@ -1,14 +1,12 @@
 import pytest
 import numpy as np
-from typeconvert.utils import bits_to_wordsize
-from typeconvert.func import onescomp as func
-from typeconvert.ufunc import onescomp as ufunc
+from typeconvert.utils import _bits_to_dtype
+from typeconvert.py.func import onescomp as py_func
+from typeconvert.py.ufunc import onescomp as py_ufunc
+from typeconvert.c.func import onescomp as c_func
+from typeconvert.c.ufunc import onescomp as c_ufunc
+from .conftest import SpecificCasesBase
 
-# Min length = 2
-# Max length = 64
-ALL_SIZES = [x for x in range(2, 65)]
-
-TEST_ARRAY_SIZE = 100
 TEST_CASES = {
     3: [
         (0b000, 0),
@@ -69,96 +67,29 @@ for size in TEST_CASES:
     for val_in, val_out in TEST_CASES[size]:
         tests.append((size, val_in, val_out))
 
-
-@pytest.mark.parametrize("size, val_in, val_out", tests)
-def test_func_specific_cases(size, val_in, val_out):
-    assert func(val_in, size) == val_out
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_func_pos_zero(size):
-    val_in, val_out = 0, 0
-    assert func(val_in, size) == val_out
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_func_neg_zero(size):
-    val_in, val_out = 2**size - 1, -0
-    assert func(val_in, size) == val_out
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_func_min_positive(size):
-    val_in, val_out = 1, 1
-    assert func(val_in, size) == val_out
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_func_max_positive(size):
-    val_in = 2 ** (size - 1) - 1
-    val_out = val_in
-    assert func(val_in, size) == val_out
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_func_min_negative(size):
-    val_in, val_out = 2**size - 2, -1
-    assert func(val_in, size) == val_out
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_func_max_negative(size):
-    val_in = 1 << (size - 1)
-    val_out = -(2 ** (size - 1)) + 1
-    assert func(val_in, size) == val_out
+# Min length = 2
+# Max length = 64
+for size in range(2, 65):
+    tests.append((size, 0, 0))  # positive zero
+    tests.append((size, 2**size - 1, 0))  # negative zero
+    tests.append((size, 1, 1))  # min positive
+    tests.append((size, 2 ** (size - 1) - 1, 2 ** (size - 1) - 1))  # max positive
+    tests.append((size, 2**size - 2, -1))  # min negative
+    tests.append((size, 1 << (size - 1), -(2 ** (size - 1)) + 1))  # max negative
 
 
 @pytest.mark.parametrize("size, val_in, val_out", tests)
-def test_ufunc_specific_cases(size, val_in, val_out):
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    print(ufunc(data, size)[0])
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+class TestSpecificCases(SpecificCasesBase):
+    def test_py_func(self, size, val_in, val_out):
+        assert py_func(val_in, size) == val_out
 
+    def test_c_func(self, size, val_in, val_out):
+        assert c_func(val_in, size) == val_out
 
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_ufunc_pos_zero(size):
-    val_in, val_out = 0, 0
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    def test_py_ufunc(self, size, val_in, val_out):
+        data = self.make_ndarray(val_in, size)
+        assert list(py_ufunc(data, size)) == [val_out] * self.ARRAY_SIZE
 
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_ufunc_neg_zero(size):
-    val_in, val_out = 2**size - 1, -0
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_ufunc_min_positive(size):
-    val_in, val_out = 1, 1
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_ufunc_max_positive(size):
-    val_in = 2 ** (size - 1) - 1
-    val_out = val_in
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_ufunc_min_negative(size):
-    val_in, val_out = 2**size - 2, -1
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
-
-
-@pytest.mark.parametrize("size", ALL_SIZES)
-def test_ufunc_max_negative(size):
-    val_in = 1 << (size - 1)
-    val_out = -(2 ** (size - 1)) + 1
-    data = np.array([val_in] * TEST_ARRAY_SIZE, dtype=f"uint{bits_to_wordsize(size)}")
-    assert list(ufunc(data, size)) == [val_out] * TEST_ARRAY_SIZE
+    def test_c_ufunc(self, size, val_in, val_out):
+        data = self.make_ndarray(val_in, size)
+        assert list(c_ufunc(data, size)) == [val_out] * self.ARRAY_SIZE

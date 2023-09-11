@@ -17,7 +17,7 @@
 
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
-static void uint64_ti32(char **args, const npy_intp *dimensions,
+static void uint64_ti40(char **args, const npy_intp *dimensions,
                         const npy_intp *steps, void *data)
 {
     npy_intp i;
@@ -27,16 +27,16 @@ static void uint64_ti32(char **args, const npy_intp *dimensions,
     npy_intp in1_step = steps[0];
     npy_intp out1_step = steps[1];
 
-    uint32_t unsigned_int, m, e, s;
+    uint64_t unsigned_int, m, e, s;
     double M, E, S, result;
 
     for (i = 0; i < n; i++) {
         /* BEGIN main ufunc computation */
-        unsigned_int = *(uint32_t *)in1;
+        unsigned_int = *(uint64_t *)in1;
 
-        e = (unsigned_int & 0xFF000000) >> 24;
-        s = (unsigned_int & 0x00800000) >> 23;
-        m = (unsigned_int & 0x007FFFFF);
+        e = (unsigned_int & 0xFF00000000) >> 32;
+        s = (unsigned_int & 0x0080000000) >> 31;
+        m = (unsigned_int & 0x007FFFFFFF);
 
         if (e == -128) {
             result = (double) 0.0f;
@@ -44,7 +44,7 @@ static void uint64_ti32(char **args, const npy_intp *dimensions,
             S = pow(-2.0, (double) s);
             E = (double) twoscomp(e, 8);
             M = (double) m;
-            result = (S + M/((double) (1L << 23))) * pow((double) 2.0, E);
+            result = (S + M/((double) (1L << 31))) * pow((double) 2.0, E);
         }
 
         *((double *)out1) = (double) result;
@@ -56,10 +56,10 @@ static void uint64_ti32(char **args, const npy_intp *dimensions,
 }
 
 /*This a pointer to the above function*/
-PyUFuncGenericFunction ti32_funcs[1] = {&uint64_ti32};
+PyUFuncGenericFunction ti40_funcs[1] = {&uint64_ti40};
 
 /* These are the input and return dtypes of ufunc.*/
 
-static char ti32_types[2] = {
-    NPY_UINT32, NPY_FLOAT64,
+static char ti40_types[2] = {
+    NPY_UINT64, NPY_FLOAT64,
 };

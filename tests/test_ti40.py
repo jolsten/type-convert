@@ -3,6 +3,7 @@ import numpy as np
 from typeconvert._py.twoscomp import func as uint_to_twoscomp
 from typeconvert._py.func import ti40 as py_func
 from typeconvert._py.ufunc import ti40 as py_ufunc
+from typeconvert._c.ufunc import ti40 as c_ufunc
 from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 TEST_ARRAY_SIZE = 100
@@ -19,7 +20,7 @@ for s in S:
             val_out = ((-2) ** s + float(m) / 2**31) * float(2) ** uint_to_twoscomp(
                 e, 8
             )
-            TEST_CASES.append((val_in, pytest.approx(val_out)))
+            TEST_CASES.append((float(val_in), pytest.approx(float(val_out))))
 SIZE = 40
 
 
@@ -36,6 +37,7 @@ class TestSpecificCases(SpecificCasesBase):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
-    # def test_c_ufunc(self, val_in, val_out):
-    #     data = self.make_ndarray(val_in, SIZE)
-    #     assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE
+    def test_c_ufunc(self, val_in, val_out):
+        data = self.make_ndarray(val_in, SIZE)
+        print(data.dtype, f"{data[0]:010x}")
+        assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE

@@ -5,6 +5,7 @@
 #include "./milstd1750a32.c"
 #include "./milstd1750a48.c"
 #include "./ti32.c"
+#include "./ti40.c"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
@@ -67,6 +68,12 @@ PyMODINIT_FUNC PyInit_ufunc(void)
     );
     PyDict_SetItemString(d, "ti32", ti32);
     Py_DECREF(ti32);
+
+    PyObject *ti40 = PyUFunc_FromFuncAndData(
+        ti40_funcs, NULL, ti40_types, 1, 1, 1, PyUFunc_None, "ti40", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "ti40", ti40);
+    Py_DECREF(ti40);
 
     return m;
 }

@@ -37,7 +37,7 @@ static PyObject *method_twoscomp(PyObject *self, PyObject *args) {
 
 static PyObject *method_1750a32(PyObject *self, PyObject *args) {
     uint32_t unsigned_int;
-    float value, M, E;
+    double value, M, E;
     unsigned long m, e;
 
     /* Parse arguments */
@@ -47,9 +47,9 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
 
     m = (unsigned_int & 0xFFFFFF00) >> 8;
     e = (unsigned_int & 0x000000FF);
-    M = ((float) twoscomp(m, 24)) / ((float) (1 << 23));
-    E = ((float) twoscomp(e,  8));
-    value = M * pow(2.0f, E);
+    M = ((double) twoscomp(m, 24)) / ((double) (1 << 23));
+    E = ((double) twoscomp(e,  8));
+    value = (double) M * pow(2.0f, E);
 
     return PyFloat_FromDouble((double) value);
 }

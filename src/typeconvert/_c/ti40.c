@@ -38,13 +38,14 @@ static void uint64_ti40(char **args, const npy_intp *dimensions,
         s = (unsigned_int & 0x0080000000) >> 31;
         m = (unsigned_int & 0x007FFFFFFF);
 
-        if (e == -128) {
+        if (e == 0b10000000) {
             result = (double) 0.0f;
         } else {
-            S = pow(-2.0, (double) s);
+            // Equivalent to (-2) ** s
+            S = (s == 0) ? (double) 1.0f : (double) -2.0f;
             E = (double) twoscomp(e, 8);
             M = (double) m;
-            result = (S + M/((double) (1L << 31))) * pow((double) 2.0, E);
+            result = (S + M/((double) (1UL << 31))) * pow((double) 2.0, E);
         }
 
         *((double *)out1) = (double) result;

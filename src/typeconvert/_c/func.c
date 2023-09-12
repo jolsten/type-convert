@@ -171,6 +171,75 @@ static PyObject *method_ibm64(PyObject *self, PyObject *args) {
     return PyFloat_FromDouble(result);
 }
 
+static PyObject *method_dec32(PyObject *self, PyObject *args) {
+    uint32_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    s =  unsigned_int >> 31;
+    e = (unsigned_int >> 23) & 0xFF;
+    m = (unsigned_int & 0x007FFFFF);
+
+    // Equivalent to (-1) ** s
+    S = (s == 1) ? (double) -1.0f : (double) 1.0f;
+    E = (double) ((signed int) e - 128);
+    M = ((double) m) / ((double) (1UL << 24)) + (double) 0.5f;
+
+    result = S * M * pow((double) 2.0f, E);
+
+    return PyFloat_FromDouble(result);
+}
+
+static PyObject *method_dec64(PyObject *self, PyObject *args) {
+    uint64_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    s =  unsigned_int >> 63;
+    e = (unsigned_int >> 55) & 0xFF;
+    m = (unsigned_int & 0x007FFFFFFFFFFFFF);
+
+    // Equivalent to (-1) ** s
+    S = (s == 1) ? (double) -1.0f : (double) 1.0f;
+    E = (double) ((signed int) e - 128);
+    M = ((double) m) / ((double) (1ULL << 56)) + (double) 0.5f;
+
+    result = S * M * pow((double) 2.0f, E);
+
+    return PyFloat_FromDouble(result);
+}
+
+static PyObject *method_dec64g(PyObject *self, PyObject *args) {
+    uint64_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    s =  unsigned_int >> 63;
+    e = (unsigned_int >> 52) & 0x7FF;
+    m = (unsigned_int & 0x000FFFFFFFFFFFFF);
+
+    // Equivalent to (-1) ** s
+    S = (s == 1) ? (double) -1.0f : (double) 1.0f;
+    E = (double) ((signed int) e - 1024);
+    M = ((double) m) / ((double) (1ULL << 53)) + (double) 0.5f;
+
+    result = S * M * pow((double) 2.0f, E);
+
+    return PyFloat_FromDouble(result);
+}
+
 static PyMethodDef TypeConversionMethods[] = {
     {"onescomp", method_onescomp, METH_VARARGS, "Python interface for the onescomp function"},
     {"twoscomp", method_twoscomp, METH_VARARGS, "Python interface for the twoscomp function"},
@@ -180,9 +249,9 @@ static PyMethodDef TypeConversionMethods[] = {
     {"ti40", method_ti40, METH_VARARGS, "Python interface for the ti40 function"},
     {"ibm32", method_ibm32, METH_VARARGS, "Python interface for the ibm32 function"},
     {"ibm64", method_ibm64, METH_VARARGS, "Python interface for the ibm64 function"},
-    // {"dec32", method_dec32, METH_VARARGS, "Python interface for the dec32 function"},
-    // {"dec64", method_dec64, METH_VARARGS, "Python interface for the dec64 function"},
-    // {"dec64", method_dec64, METH_VARARGS, "Python interface for the dec64g function"},
+    {"dec32", method_dec32, METH_VARARGS, "Python interface for the dec32 function"},
+    {"dec64", method_dec64, METH_VARARGS, "Python interface for the dec64 function"},
+    {"dec64g", method_dec64g, METH_VARARGS, "Python interface for the dec64g function"},
     {NULL, NULL, 0, NULL}
 };
 

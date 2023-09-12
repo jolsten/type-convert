@@ -6,6 +6,8 @@
 #include "./milstd1750a48.c"
 #include "./ti32.c"
 #include "./ti40.c"
+#include "./ibm32.c"
+#include "./ibm64.c"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
@@ -74,6 +76,18 @@ PyMODINIT_FUNC PyInit_ufunc(void)
     );
     PyDict_SetItemString(d, "ti40", ti40);
     Py_DECREF(ti40);
+
+    PyObject *ibm32 = PyUFunc_FromFuncAndData(
+        ibm32_funcs, NULL, ibm32_types, 1, 1, 1, PyUFunc_None, "ibm32", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "ibm32", ibm32);
+    Py_DECREF(ibm32);
+
+    PyObject *ibm64 = PyUFunc_FromFuncAndData(
+        ibm64_funcs, NULL, ibm64_types, 1, 1, 1, PyUFunc_None, "ibm64", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "ibm64", ibm64);
+    Py_DECREF(ibm64);
 
     return m;
 }

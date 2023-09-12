@@ -1,6 +1,7 @@
 import pytest
 from typeconvert._py.func import ibm32 as py_func
 from typeconvert._py.ufunc import ibm32 as py_ufunc
+from typeconvert._c.func import ibm32 as c_func
 from typeconvert._c.ufunc import ibm32 as c_ufunc
 from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
@@ -24,8 +25,8 @@ class TestSpecificCases(SpecificCasesBase):
     def test_py_func(self, val_in, val_out):
         assert py_func(val_in) == val_out
 
-    # def test_c_func(self, val_in, val_out):
-    #     assert c_func(val_in) == val_out
+    def test_c_func(self, val_in, val_out):
+        assert c_func(val_in) == val_out
 
     @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
     def test_py_ufunc(self, val_in, val_out):

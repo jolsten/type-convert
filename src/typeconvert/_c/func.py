@@ -5,4 +5,6 @@ from typeconvert_ext.func import (
     milstd1750a48,
     ti32,
     ti40,
+    ibm32,
+    ibm64,
 )

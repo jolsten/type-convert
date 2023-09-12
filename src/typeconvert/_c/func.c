@@ -125,6 +125,52 @@ static PyObject *method_ti40(PyObject *self, PyObject *args) {
     return PyFloat_FromDouble(result);
 }
 
+static PyObject *method_ibm32(PyObject *self, PyObject *args) {
+    uint64_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    s = (unsigned_int & 0x80000000) >> 31;
+    e = (unsigned_int & 0x7F000000) >> 24;
+    m = (unsigned_int & 0x00FFFFFF);
+
+    // Equivalent to (-1) ** s
+    S = (s == 1) ? (double) -1.0f : (double) 1.0f;
+    E = (double) ((signed int) e - 64);
+    M = ((double) m) / ((double) (1U << 24));
+
+    result = S * M * pow((double) 16.0f, E);
+
+    return PyFloat_FromDouble(result);
+}
+
+static PyObject *method_ibm64(PyObject *self, PyObject *args) {
+    uint64_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    s = (unsigned_int & 0x8000000000000000) >> 63;
+    e = (unsigned_int & 0x7F00000000000000) >> 56;
+    m = (unsigned_int & 0x00FFFFFFFFFFFFFF);
+
+    // Equivalent to (-1) ** s
+    S = (s == 1) ? (double) -1.0f : (double) 1.0f;
+    E = (double) ((signed int) e - 64);
+    M = ((double) m) / ((double) (1ULL << 56));
+
+    result = S * M * pow((double) 16.0f, E);
+
+    return PyFloat_FromDouble(result);
+}
+
 static PyMethodDef TypeConversionMethods[] = {
     {"onescomp", method_onescomp, METH_VARARGS, "Python interface for the onescomp function"},
     {"twoscomp", method_twoscomp, METH_VARARGS, "Python interface for the twoscomp function"},
@@ -132,6 +178,11 @@ static PyMethodDef TypeConversionMethods[] = {
     {"milstd1750a48", method_1750a48, METH_VARARGS, "Python interface for the milstd1750a48 function"},
     {"ti32", method_ti32, METH_VARARGS, "Python interface for the ti32 function"},
     {"ti40", method_ti40, METH_VARARGS, "Python interface for the ti40 function"},
+    {"ibm32", method_ibm32, METH_VARARGS, "Python interface for the ibm32 function"},
+    {"ibm64", method_ibm64, METH_VARARGS, "Python interface for the ibm64 function"},
+    // {"dec32", method_dec32, METH_VARARGS, "Python interface for the dec32 function"},
+    // {"dec64", method_dec64, METH_VARARGS, "Python interface for the dec64 function"},
+    // {"dec64", method_dec64, METH_VARARGS, "Python interface for the dec64g function"},
     {NULL, NULL, 0, NULL}
 };
 

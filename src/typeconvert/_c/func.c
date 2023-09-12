@@ -74,11 +74,64 @@ static PyObject *method_1750a48(PyObject *self, PyObject *args) {
     return PyFloat_FromDouble(value);
 }
 
+static PyObject *method_ti32(PyObject *self, PyObject *args) {
+    uint32_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    e = (unsigned_int & 0xFF000000) >> 24;
+    s = (unsigned_int & 0x00800000) >> 23;
+    m = (unsigned_int & 0x007FFFFF);
+
+    if (e == 0b10000000) {
+        result = (double) 0.0f;
+    } else {
+        // Equivalent to (-2) ** s
+        S = (s == 0) ? (double) 1.0f : (double) -2.0f;
+        E = (double) twoscomp(e, 8);
+        M = (double) m;
+        result = (S + M/((double) (1UL << 23))) * pow((double) 2.0, E);
+    }
+
+    return PyFloat_FromDouble(result);
+}
+
+static PyObject *method_ti40(PyObject *self, PyObject *args) {
+    uint64_t unsigned_int, m, e, s;
+    double result, M, E, S;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+        return NULL;
+    }
+
+    e = (unsigned_int & 0xFF00000000) >> 32;
+    s = (unsigned_int & 0x0080000000) >> 31;
+    m = (unsigned_int & 0x007FFFFFFF);
+    if (e == 0b10000000) {
+        result = (double) 0.0f;
+    } else {
+        // Equivalent to (-2) ** s
+        S = (s == 0) ? (double) 1.0f : (double) -2.0f;
+        E = (double) twoscomp(e, 8);
+        M = (double) m;
+        result = (S + M/((double) (1UL << 31))) * pow((double) 2.0, E);
+    }
+
+    return PyFloat_FromDouble(result);
+}
+
 static PyMethodDef TypeConversionMethods[] = {
     {"onescomp", method_onescomp, METH_VARARGS, "Python interface for the onescomp function"},
     {"twoscomp", method_twoscomp, METH_VARARGS, "Python interface for the twoscomp function"},
     {"milstd1750a32", method_1750a32, METH_VARARGS, "Python interface for the milstd1750a32 function"},
     {"milstd1750a48", method_1750a48, METH_VARARGS, "Python interface for the milstd1750a48 function"},
+    {"ti32", method_ti32, METH_VARARGS, "Python interface for the ti32 function"},
+    {"ti40", method_ti40, METH_VARARGS, "Python interface for the ti40 function"},
     {NULL, NULL, 0, NULL}
 };
 

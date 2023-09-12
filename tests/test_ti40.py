@@ -3,6 +3,7 @@ import numpy as np
 from typeconvert._py.twoscomp import func as uint_to_twoscomp
 from typeconvert._py.func import ti40 as py_func
 from typeconvert._py.ufunc import ti40 as py_ufunc
+from typeconvert._c.func import ti40 as c_func
 from typeconvert._c.ufunc import ti40 as c_ufunc
 from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
@@ -89,7 +90,7 @@ TEST_FROM_COMPONENTS = (
 TEST_CASES = []
 for e, s, m, val_out in TEST_FROM_COMPONENTS:
     val_in = np.uint64((e << 32) + (s << 31) + m)
-    TEST_CASES.append((val_in, pytest.approx(val_out)))
+    TEST_CASES.append((int(val_in), pytest.approx(val_out)))
 SIZE = 40
 
 
@@ -98,8 +99,8 @@ class TestSpecificCases(SpecificCasesBase):
     def test_py_func(self, val_in, val_out):
         assert py_func(val_in) == val_out
 
-    # def test_c_func(self, val_in, val_out):
-    #     assert c_func(val_in) == val_out
+    def test_c_func(self, val_in, val_out):
+        assert c_func(val_in) == val_out
 
     @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
     def test_py_ufunc(self, val_in, val_out):

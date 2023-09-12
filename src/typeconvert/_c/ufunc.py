@@ -7,4 +7,7 @@ from typeconvert_ext.ufunc import (
     ti40,
     ibm32,
     ibm64,
+    dec32,
+    dec64,
+    dec64g,
 )

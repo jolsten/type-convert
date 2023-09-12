@@ -1,6 +1,7 @@
 import pytest
 from typeconvert._py.func import dec64g as py_func
 from typeconvert._py.ufunc import dec64g as py_ufunc
+from typeconvert._c.ufunc import dec64g as c_ufunc
 from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 TEST_CASES = [
@@ -34,6 +35,6 @@ class TestSpecificCases(SpecificCasesBase):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
-    # def test_c_ufunc(self, val_in, val_out):
-    #     data = self.make_ndarray(val_in, SIZE)
-    #     assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE
+    def test_c_ufunc(self, val_in, val_out):
+        data = self.make_ndarray(val_in, SIZE)
+        assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE

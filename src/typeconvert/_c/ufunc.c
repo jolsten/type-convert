@@ -8,6 +8,9 @@
 #include "./ti40.c"
 #include "./ibm32.c"
 #include "./ibm64.c"
+#include "./dec32.c"
+#include "./dec64.c"
+#include "./dec64g.c"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
@@ -88,6 +91,24 @@ PyMODINIT_FUNC PyInit_ufunc(void)
     );
     PyDict_SetItemString(d, "ibm64", ibm64);
     Py_DECREF(ibm64);
+
+    PyObject *dec32 = PyUFunc_FromFuncAndData(
+        dec32_funcs, NULL, dec32_types, 1, 1, 1, PyUFunc_None, "dec32", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "dec32", dec32);
+    Py_DECREF(dec32);
+
+    PyObject *dec64 = PyUFunc_FromFuncAndData(
+        dec64_funcs, NULL, dec64_types, 1, 1, 1, PyUFunc_None, "dec64", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "dec64", dec64);
+    Py_DECREF(dec64);
+
+    PyObject *dec64g = PyUFunc_FromFuncAndData(
+        dec64g_funcs, NULL, dec64g_types, 1, 1, 1, PyUFunc_None, "dec64g", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "dec64g", dec64g);
+    Py_DECREF(dec64g);
 
     return m;
 }

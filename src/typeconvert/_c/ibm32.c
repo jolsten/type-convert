@@ -17,16 +17,6 @@
 
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
-    // s = (value >> np.uint8(31)) * np.uint32(1)
-    // e = (value >> np.uint8(24)) & np.uint32(0x7F)
-    // m = (value & np.uint32(0x00FFFFFF))
-
-    // S = np.int8(-1) ** s
-    // E = np.int8(e) - np.int8(64)
-    // M = np.float64(m) / np.float64(2**24)
-
-    // return np.float64(S * M * np.float64(16)**E)
-
 static void uint64_ibm32(char **args, const npy_intp *dimensions,
                          const npy_intp *steps, void *data)
 {

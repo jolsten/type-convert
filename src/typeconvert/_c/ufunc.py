@@ -10,4 +10,5 @@ from typeconvert_ext.ufunc import (
     dec32,
     dec64,
     dec64g,
+    bcd,
 )

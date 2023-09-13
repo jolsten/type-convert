@@ -2,6 +2,7 @@ import pytest
 import numpy as np
 from typeconvert._py.func import bcd as py_func
 from typeconvert._py.ufunc import bcd as py_ufunc
+from typeconvert._c.ufunc import bcd as c_ufunc
 from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 # https://pubs.usgs.gov/of/2005/1424/
@@ -31,6 +32,6 @@ class TestSpecificCases(SpecificCasesBase):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
-    # def test_c_ufunc(self, val_in, val_out):
-    #     data = self.make_ndarray(val_in, SIZE)
-    #     assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE
+    def test_c_ufunc(self, val_in, val_out):
+        data = self.make_ndarray(val_in, SIZE)
+        assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE

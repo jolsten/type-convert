@@ -11,6 +11,7 @@
 #include "./dec32.c"
 #include "./dec64.c"
 #include "./dec64g.c"
+#include "./bcd.c"
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
@@ -109,6 +110,12 @@ PyMODINIT_FUNC PyInit_ufunc(void)
     );
     PyDict_SetItemString(d, "dec64g", dec64g);
     Py_DECREF(dec64g);
+
+    PyObject *bcd = PyUFunc_FromFuncAndData(
+        bcd_funcs, NULL, bcd_types, 4, 1, 1, PyUFunc_None, "bcd", "ufunc_docstring", 0
+    );
+    PyDict_SetItemString(d, "bcd", bcd);
+    Py_DECREF(bcd);
 
     return m;
 }

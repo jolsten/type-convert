@@ -240,6 +240,33 @@ static PyObject *method_dec64g(PyObject *self, PyObject *args) {
     return PyFloat_FromDouble(result);
 }
 
+static PyObject *method_bcd(PyObject *self, PyObject *args) {
+    unsigned long long input, place;
+    unsigned char digit;
+    signed long long result;
+
+    /* Parse arguments */
+    if(!PyArg_ParseTuple(args, "K", &input)) {
+        return NULL;
+    }
+
+    result = 0;
+    place = 1;
+    while (input > 0) {
+        digit = input & 0xF;
+        if (digit > 10) {
+            result = -1;
+            input = 0;
+        } else {
+            result += (int64_t) (digit * place);
+            place *= 10;
+            input = input >> 4;
+        }
+    }
+
+    return PyLong_FromLongLong(result);
+}
+
 static PyMethodDef TypeConversionMethods[] = {
     {"onescomp", method_onescomp, METH_VARARGS, "Python interface for the onescomp function"},
     {"twoscomp", method_twoscomp, METH_VARARGS, "Python interface for the twoscomp function"},
@@ -252,6 +279,7 @@ static PyMethodDef TypeConversionMethods[] = {
     {"dec32", method_dec32, METH_VARARGS, "Python interface for the dec32 function"},
     {"dec64", method_dec64, METH_VARARGS, "Python interface for the dec64 function"},
     {"dec64g", method_dec64g, METH_VARARGS, "Python interface for the dec64g function"},
+    {"bcd", method_bcd, METH_VARARGS, "Python interface for the bcd function"},
     {NULL, NULL, 0, NULL}
 };
 

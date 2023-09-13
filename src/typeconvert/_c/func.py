@@ -10,4 +10,5 @@ from typeconvert_ext.func import (
     dec32,
     dec64,
     dec64g,
+    bcd,
 )

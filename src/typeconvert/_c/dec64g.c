@@ -5,14 +5,7 @@
 #include "numpy/ufuncobject.h"
 
 /*
- * twoscomp_ufunc.c
- * This is the C code for a numpy ufunc converting an 
- * arbitrary-length (2-64 bits) unsigned integer to that
- * binary value's representation as a twos-complement number.
- * 
- * This method only works on systems which use arithmetic
- * right shift on negative signed integers. Which is,
- * hopefully, everywhere this gets used.
+ * dec64g.c
  */
 
 /* The loop definition must precede the PyMODINIT_FUNC. */
@@ -28,7 +21,7 @@
     // return np.float64(S * M * np.float64(2)**E)
 
 static void uint64_dec64g(char **args, const npy_intp *dimensions,
-                         const npy_intp *steps, void *data)
+                          const npy_intp *steps, void *data)
 {
     npy_intp i;
     npy_intp n = dimensions[0];

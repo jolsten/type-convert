@@ -18,7 +18,7 @@
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
 static void uint8_twoscomp(char **args, const npy_intp *dimensions,
-                             const npy_intp *steps, void *data)
+                           const npy_intp *steps, void *data)
 {
     npy_intp i;
     npy_intp n = dimensions[0];

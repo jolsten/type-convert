@@ -5,21 +5,14 @@
 #include <math.h>
 
 /*
- * onescomp_ufunc.c
- * This is the C code for a numpy ufunc converting an 
- * arbitrary-length (2-64 bits) unsigned integer to that
- * binary value's representation as a ones-complement number.
- * 
- * This method only works on systems which use arithmetic
- * right shift on negative signed integers. Which is,
- * hopefully, everywhere this gets used.
+ * onescomp.c
  */
 
 /* Numpy Ufunc Definition Begins Here */
 /* The loop definition must precede the PyMODINIT_FUNC. */
 
 static void uint8_onescomp(char **args, const npy_intp *dimensions,
-                             const npy_intp *steps, void *data)
+                           const npy_intp *steps, void *data)
 {
     npy_intp i;
     npy_intp n = dimensions[0];

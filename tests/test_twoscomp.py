@@ -1,6 +1,6 @@
 import pytest
-import numpy as np
-from typeconvert.utils import _bits_to_dtype
+from typeconvert.func import twoscomp as func
+from typeconvert.ufunc import twoscomp as ufunc
 from typeconvert._py.func import twoscomp as py_func
 from typeconvert._py.ufunc import twoscomp as py_ufunc
 from typeconvert._c.func import twoscomp as c_func
@@ -93,3 +93,10 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_ufunc(self, size, val_in, val_out):
         data = self.make_ndarray(val_in, size)
         assert list(c_ufunc(data, size)) == [val_out] * self.ARRAY_SIZE
+
+    def test_func(self, size, val_in, val_out):
+        assert func(val_in, size) == val_out
+
+    def test_ufunc(self, size, val_in, val_out):
+        data = self.make_ndarray(val_in, size)
+        assert list(ufunc(data, size)) == [val_out] * self.ARRAY_SIZE

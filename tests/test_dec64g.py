@@ -1,4 +1,6 @@
 import pytest
+from typeconvert.func import dec64g as func
+from typeconvert.ufunc import dec64g as ufunc
 from typeconvert._py.func import dec64g as py_func
 from typeconvert._py.ufunc import dec64g as py_ufunc
 from typeconvert._c.func import dec64g as c_func
@@ -39,3 +41,10 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_ufunc(self, val_in, val_out):
         data = self.make_ndarray(val_in, SIZE)
         assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE
+
+    def test_func(self, val_in, val_out):
+        assert func(val_in) == val_out
+
+    def test_ufunc(self, val_in, val_out):
+        data = self.make_ndarray(val_in, SIZE)
+        assert list(ufunc(data)) == [val_out] * self.ARRAY_SIZE

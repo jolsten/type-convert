@@ -1,4 +1,6 @@
 import pytest
+from typeconvert.func import bcd as func
+from typeconvert.ufunc import bcd as ufunc
 from typeconvert._py.func import bcd as py_func
 from typeconvert._py.ufunc import bcd as py_ufunc
 from typeconvert._c.func import bcd as c_func
@@ -45,12 +47,22 @@ class TestSpecificCases(SpecificCasesBase):
 
     @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
     def test_py_ufunc(self, val_in, val_out):
-        size = 4 * len(str(val_in))
+        size = 4 * len(f"{val_in:x}")
         data = self.make_ndarray(val_in, size)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
     def test_c_ufunc(self, val_in, val_out):
-        size = 4 * len(str(val_in))
+        size = 4 * len(f"{val_in:x}")
         data = self.make_ndarray(val_in, size)
         print(f"{val_in:x}", c_ufunc(data).dtype)
         assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE
+
+    def test_func(self, val_in, val_out):
+        assert func(val_in) == val_out
+
+    def test_ufunc(self, val_in, val_out):
+        print(f"val_in = 0x{val_in:x}, val_out = {val_out}")
+        size = 4 * len(f"{val_in:x}")
+        data = self.make_ndarray(val_in, size)
+        print(size, data.dtype)
+        assert list(ufunc(data)) == [val_out] * self.ARRAY_SIZE

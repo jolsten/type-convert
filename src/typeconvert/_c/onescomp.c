@@ -6,6 +6,13 @@
 
 /*
  * onescomp.c
+ * This is the C code for a numpy ufunc converting an 
+ * arbitrary-length (2-64 bits) unsigned integer to that
+ * binary value's representation as a ones-complement number.
+ * 
+ * This method only works on systems which use arithmetic
+ * right shift on negative signed integers. Which is,
+ * hopefully, everywhere this gets used.
  */
 
 /* Numpy Ufunc Definition Begins Here */

@@ -254,11 +254,11 @@ static PyObject *method_bcd(PyObject *self, PyObject *args) {
     place = 1;
     while (input > 0) {
         digit = input & 0xF;
-        if (digit > 10) {
+        if (digit >= 10) {
             result = -1;
             input = 0;
         } else {
-            result += (int64_t) (digit * place);
+            result += (signed long long) (digit * place);
             place *= 10;
             input = input >> 4;
         }

@@ -32,7 +32,7 @@ static void uint8_bcd(char **args, const npy_intp *dimensions,
         place = 1;
         while (input > 0) {
             digit = input & 0xF;
-            if (digit > 10) {
+            if (digit >= 10) {
                 result = -1;
                 input = 0;
             } else {
@@ -71,7 +71,7 @@ static void uint16_bcd(char **args, const npy_intp *dimensions,
         place = 1;
         while (input > 0) {
             digit = input & 0xF;
-            if (digit > 10) {
+            if (digit >= 10) {
                 result = -1;
                 input = 0;
             } else {
@@ -110,7 +110,7 @@ static void uint32_bcd(char **args, const npy_intp *dimensions,
         place = 1;
         while (input > 0) {
             digit = input & 0xF;
-            if (digit > 10) {
+            if (digit >= 10) {
                 result = -1;
                 input = 0;
             } else {
@@ -149,7 +149,7 @@ static void uint64_bcd(char **args, const npy_intp *dimensions,
         place = 1;
         while (input > 0) {
             digit = input & 0xF;
-            if (digit > 10) {
+            if (digit >= 10) {
                 result = -1;
                 input = 0;
             } else {

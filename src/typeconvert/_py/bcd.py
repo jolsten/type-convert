@@ -2,11 +2,11 @@ import numpy as np
 from numba import njit, vectorize
 
 signatures = [
-    "u8(u8)",
+    "u8(i8)",
 ]
 
 
-def func(value: np.uint64) -> np.uint64:
+def func(value: np.uint64) -> np.int64:
     r"""Convert Binary-Coded Decimal (BCD) to an uint.
 
     Converts an up-to 64-bit BCD value to an unsigned integer.
@@ -30,14 +30,20 @@ def func(value: np.uint64) -> np.uint64:
     (<class 'numpy.uint64'>, 12345678)
     """
     value = np.uint64(value)
+    result = np.int64(0)
+    place = np.uint64(1)
+    digit = np.uint8(0)
+    while value > np.uint64(0):
+        digit = np.uint8(value) & np.uint8(0xF)
+        if digit >= 10:
+            result = np.int64(-1)
+            value = np.uint64(0)
+        else:
+            result += digit * place
+            place *= np.uint64(10)
+            value = np.uint64(value) >> np.uint8(4)
 
-    out = np.uint64(0)
-    idx = np.uint64(0)
-    while value:
-        out += ((value & np.uint8(0xF)) % np.uint8(10)) * np.uint64(10) ** np.uint8(idx)
-        value = value >> np.uint8(4)
-        idx += 1
-    return out
+    return result
 
 
 jfunc = njit(signatures)(func)

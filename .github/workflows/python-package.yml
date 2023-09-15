@@ -98,6 +98,7 @@ jobs:
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
 
 
   upload_pypi:
@@ -116,5 +117,7 @@ jobs:
           # if `name: artifact` is omitted, the action will create extra parent dir
           name: artifact
           path: dist
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
       - uses: pypa/gh-action-pypi-publish@release/v1

@@ -46,12 +46,12 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
 
     m = (unsigned_int & 0xFFFFFF00) >> 8;
     e = (unsigned_int & 0x000000FF);
-    print("m = %lu\ne = %lu\n", m, e);
+    printf("m = %lu\ne = %lu\n", m, e);
 
     M = ((double) twoscomp(m, 24)) / ((double) (1UL << 23));
     E = ((double) twoscomp(e,  8));
     value = (double) M * pow(2.0f, E);
-    print("m = %le\ne = %le\n", M, E);
+    printf("m = %le\ne = %le\n", M, E);
 
     return PyFloat_FromDouble((double) value);
 }

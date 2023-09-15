@@ -51,7 +51,7 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
     M = ((double) twoscomp(m, 24)) / ((double) (1UL << 23));
     E = ((double) twoscomp(e,  8));
     value = (double) M * pow(2.0f, E);
-    printf("m = %le\ne = %le\n", M, E);
+    printf("M = %le\nE = %le\n", M, E);
     fflush(stdout);
 
     return PyFloat_FromDouble((double) value);

@@ -34,13 +34,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python_version: [ '3.8', '3.9', '3.10', '3.11', 'pypy-3.8' ]
+        python-version: [ '3.8', '3.9', '3.10', '3.11', 'pypy-3.8' ]
         os: [ubuntu-latest] #, windows-latest] #, macos-latest]
         include:
         - os: windows-latest
-          python_version: 'msys2'
+          python-version: 'msys2'
 
-    name: ${{ matrix.os }} - Python ${{ matrix.python_version }}
+    name: ${{ matrix.os }} - Python ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup python

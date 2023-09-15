@@ -1,1 +1,10 @@
-__version__ = "0.2.0rc1"
+try:
+    from ._version import __version__
+except ImportError:
+    from importlib.metadata import version, PackageNotFoundError
+
+    try:
+        __version__ = version("package-name")
+    except PackageNotFoundError:
+        # package is not installed
+        pass

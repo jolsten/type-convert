@@ -39,7 +39,6 @@ where = ["src"]
 include = ["typeconvert*"]
 
 [tool.setuptools_scm]
-write_to = "typeconvert/_version.py"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

@@ -8,8 +8,8 @@ from typeconvert._c.ufunc import milstd1750a32 as c_ufunc
 from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 TEST_CASES = [
-    (0x7FFFFF7F, 0.9999998 * 2**127),
     (0x4000007F, 0.5 * 2**127),
+    (0x7FFFFF7F, 0.9999998 * 2**127),
     (0x50000004, 0.625 * 2**4),
     (0x40000001, 0.5 * 2**1),
     (0x40000000, 0.5 * 2**0),

@@ -36,13 +36,16 @@ static PyObject *method_twoscomp(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_1750a32(PyObject *self, PyObject *args) {
+    unsigned long input;
     uint32_t unsigned_int, m, e;
     double value, M, E;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &input)) {
         return NULL;
     }
+    
+    unsigned_int = (uint32_t) input;
 
     m = (unsigned_int & 0xFFFFFF00) >> 8;
     e = (unsigned_int & 0x000000FF);

@@ -36,9 +36,8 @@ static PyObject *method_twoscomp(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_1750a32(PyObject *self, PyObject *args) {
-    uint32_t unsigned_int;
+    uint32_t unsigned_int, m, e;
     double value, M, E;
-    unsigned long m, e;
 
     /* Parse arguments */
     if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
@@ -47,7 +46,7 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
 
     m = (unsigned_int & 0xFFFFFF00) >> 8;
     e = (unsigned_int & 0x000000FF);
-    M = ((double) twoscomp(m, 24)) / ((double) (1 << 23));
+    M = ((double) twoscomp(m, 24)) / ((double) (1UL << 23));
     E = ((double) twoscomp(e,  8));
     value = (double) M * pow(2.0f, E);
 
@@ -55,7 +54,7 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_1750a48(PyObject *self, PyObject *args) {
-    unsigned long long unsigned_int, m, e;
+    uint64_t unsigned_int, m, e;
     double value, M, E;
 
     /* Parse arguments */
@@ -67,7 +66,7 @@ static PyObject *method_1750a48(PyObject *self, PyObject *args) {
       +  (unsigned_int & 0x00000000FFFF);
     e =  (unsigned_int & 0x000000FF0000) >> 16;
 
-    M = ((double) twoscomp(m, 40)) / ((double) (1LL << 39));
+    M = ((double) twoscomp(m, 40)) / ((double) (1ULL << 39));
     E = ((double) twoscomp(e,  8));
 
     value = M * pow((double) 2.0, E);
@@ -79,7 +78,7 @@ static PyObject *method_ti32(PyObject *self, PyObject *args) {
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
         return NULL;
     }
 
@@ -130,7 +129,7 @@ static PyObject *method_ibm32(PyObject *self, PyObject *args) {
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
         return NULL;
     }
 
@@ -176,7 +175,7 @@ static PyObject *method_dec32(PyObject *self, PyObject *args) {
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
         return NULL;
     }
 

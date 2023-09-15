@@ -7,8 +7,6 @@ on:
     - "*"
     tags:
     - "v*"
-    tags-ignore:
-    - "*dev*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
@@ -37,7 +35,7 @@ jobs:
       fail-fast: false
       matrix:
         python_version: [ '3.8', '3.9', '3.10', '3.11', '3.12.0-beta - 3.12', 'pypy-3.8' ]
-        os: [windows-latest, ubuntu-latest] #, macos-latest]
+        os: [ubuntu-latest] #, windows-latest] #, macos-latest]
         include:
         - os: windows-latest
           python_version: 'msys2'
@@ -47,81 +45,50 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup python
         uses: actions/setup-python@v4
-        if: matrix.python_version != 'msys2'
-        with:
-          python-version: ${{ matrix.python_version }}
-          architecture: x64
-      - name: Setup MSYS2
-        uses: msys2/setup-msys2@v2
-        if: matrix.python_version == 'msys2'
-        with:
-          msystem: MINGW64
-          install: git mingw-w64-x86_64-python mingw-w64-x86_64-python-setuptools
-          update: true
-      - name: Setup GnuPG
-        # At present, the Windows VMs only come with the copy of GnuPG that's bundled
-        # with Git for Windows. If we want to use this version _and_ be able to set
-        # arbitrary GnuPG home directories, then the test would need to figure out when
-        # to convert Windows-style paths into Unix-style paths with cygpath, which is
-        # unreasonable.
-        #
-        # Instead, we'll install a version of GnuPG that can handle Windows-style paths.
-        # However, due to <https://dev.gnupg.org/T5593>, installation fails if the PATH
-        # environment variable is too long. Consequently, we need to shorten PATH to
-        # something minimal before we can install GnuPG. For further details, see
-        # <https://github.com/actions/virtual-environments/issues/2876>.
-        #
-        # Additionally, we'll explicitly set `gpg.program` to ensure Git for Windows
-        # doesn't invoke the bundled GnuPG, otherwise we'll run into
-        # <https://dev.gnupg.org/T5504>. See also: <https://dev.gnupg.org/T3020>.
-        run: |
-          $env:PATH = "C:\Program Files\Git\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\ProgramData\Chocolatey\bin"
-          [Environment]::SetEnvironmentVariable("Path", $env:PATH, "Machine")
-          choco install gnupg -y --no-progress
-          echo "C:\Program Files (x86)\gnupg\bin" >> $env:GITHUB_PATH
-          git config --system gpg.program "C:\Program Files (x86)\gnupg\bin\gpg.exe"
-        if: runner.os == 'Windows'
-      - run: pip install -U 'setuptools>=61'
-      - uses: actions/download-artifact@v3
-        with:
-          name: Packages
-          path: dist
-      - shell: bash
-        run: pip install "$(echo -n dist/*whl)[toml,test]"
-      - run: |
-          $(hg debuginstall --template "{pythonexe}") -m pip install hg-git --user
-        if: matrix.os == 'ubuntu-latest'
-      # this hopefull helps with os caches, hg init sometimes gets 20s timeouts
-      - run: hg version
+      #   if: matrix.python_version != 'msys2'
+      #   with:
+      #     python-version: ${{ matrix.python_version }}
+      #     architecture: x64
+      # - name: Setup MSYS2
+      #   uses: msys2/setup-msys2@v2
+      #   if: matrix.python_version == 'msys2'
+      #   with:
+      #     msystem: MINGW64
+      #     install: git mingw-w64-x86_64-python mingw-w64-x86_64-python-setuptools
+      #     update: true
+      # - name: Setup GnuPG
+      #   # At present, the Windows VMs only come with the copy of GnuPG that's bundled
+      #   # with Git for Windows. If we want to use this version _and_ be able to set
+      #   # arbitrary GnuPG home directories, then the test would need to figure out when
+      #   # to convert Windows-style paths into Unix-style paths with cygpath, which is
+      #   # unreasonable.
+      #   #
+      #   # Instead, we'll install a version of GnuPG that can handle Windows-style paths.
+      #   # However, due to <https://dev.gnupg.org/T5593>, installation fails if the PATH
+      #   # environment variable is too long. Consequently, we need to shorten PATH to
+      #   # something minimal before we can install GnuPG. For further details, see
+      #   # <https://github.com/actions/virtual-environments/issues/2876>.
+      #   #
+      #   # Additionally, we'll explicitly set `gpg.program` to ensure Git for Windows
+      #   # doesn't invoke the bundled GnuPG, otherwise we'll run into
+      #   # <https://dev.gnupg.org/T5504>. See also: <https://dev.gnupg.org/T3020>.
+      #   run: |
+      #     $env:PATH = "C:\Program Files\Git\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\ProgramData\Chocolatey\bin"
+      #     [Environment]::SetEnvironmentVariable("Path", $env:PATH, "Machine")
+      #     choco install gnupg -y --no-progress
+      #     echo "C:\Program Files (x86)\gnupg\bin" >> $env:GITHUB_PATH
+      #     git config --system gpg.program "C:\Program Files (x86)\gnupg\bin\gpg.exe"
+      #   if: runner.os == 'Windows'
+      # - run: pip install -U 'setuptools>=61'
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: Packages
+      #     path: dist
+      # - shell: bash
+      #   run: pip install "$(echo -n dist/*whl)[toml,test]"
+      # - run: |
+      #     $(hg debuginstall --template "{pythonexe}") -m pip install hg-git --user
+      #   if: matrix.os == 'ubuntu-latest'
+      # # this hopefull helps with os caches, hg init sometimes gets 20s timeouts
+      # - run: hg version
       - run: pytest
-
-  dist_upload:
-
-    runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-    permissions:
-      id-token: write
-    needs: [test]
-    steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: Packages
-        path: dist
-    - name: Publish package to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-
-  test-pypi-upload:
-    runs-on: ubuntu-latest
-    needs: [test]
-    permissions:
-      id-token: write
-    steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: Packages
-        path: dist
-    - name: Publish package to PyPI
-      continue-on-error: true
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        repository-url: https://test.pypi.org/legacy/

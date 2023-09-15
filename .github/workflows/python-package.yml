@@ -1,4 +1,4 @@
-name: python tests+artifacts+release
+name: python tests+artifacts
 
 on:
   pull_request:
@@ -84,7 +84,7 @@ jobs:
         with:
           path: dist/*.tar.gz
 
-  upload_pypi:
+  upload_test_pypi:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     environment: pypi
@@ -102,5 +102,5 @@ jobs:
           path: dist
 
       - uses: pypa/gh-action-pypi-publish@release/v1
-        # with:
-          # To test: repository-url: https://test.pypi.org/legacy/
+        with:
+          repository-url: https://test.pypi.org/legacy/

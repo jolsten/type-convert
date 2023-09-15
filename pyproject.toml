@@ -43,3 +43,6 @@ addopts = "--cov=typeconvert --cov-report html"
 testpaths = [
     "tests",
 ]
+
+[tool.check-wheel-contents]
+toplevel = "typeconvert,typeconvert_ext"

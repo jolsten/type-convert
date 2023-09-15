@@ -199,6 +199,8 @@ static PyObject *method_dec32(PyObject *self, PyObject *args) {
         return NULL;
     }
 
+    unsigned_int = (uint32_t) input;
+
     s =  unsigned_int >> 31;
     e = (unsigned_int >> 23) & 0xFF;
     m = (unsigned_int & 0x007FFFFF);

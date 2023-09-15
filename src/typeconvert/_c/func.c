@@ -44,30 +44,30 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
     if(!PyArg_ParseTuple(args, "k", &input)) {
         return NULL;
     }
-    
+
     unsigned_int = (uint32_t) input;
 
     m = (unsigned_int & 0xFFFFFF00) >> 8;
     e = (unsigned_int & 0x000000FF);
-    // printf("m = %lu\ne = %lu\n", m, e);
 
     M = ((double) twoscomp(m, 24)) / ((double) (1ULL << 23));
     E = ((double) twoscomp(e,  8));
     value = (double) M * pow((double) 2.0f, E);
-    // printf("M = %le\nE = %le\n", M, E);
-    // fflush(stdout);
 
     return PyFloat_FromDouble(value);
 }
 
 static PyObject *method_1750a48(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint64_t unsigned_int, m, e;
     double value, M, E;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "K", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint64_t) input;
 
     m = ((unsigned_int & 0xFFFFFF000000) >> 8)
       +  (unsigned_int & 0x00000000FFFF);
@@ -81,13 +81,16 @@ static PyObject *method_1750a48(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_ti32(PyObject *self, PyObject *args) {
+    unsigned long input;
     uint32_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint32_t) input;
 
     e = (unsigned_int & 0xFF000000) >> 24;
     s = (unsigned_int & 0x00800000) >> 23;
@@ -107,13 +110,16 @@ static PyObject *method_ti32(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_ti40(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint64_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "K", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint64_t) input;
 
     e = (unsigned_int & 0xFF00000000) >> 32;
     s = (unsigned_int & 0x0080000000) >> 31;
@@ -132,13 +138,16 @@ static PyObject *method_ti40(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_ibm32(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint64_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint32_t) input;
 
     s = (unsigned_int & 0x80000000) >> 31;
     e = (unsigned_int & 0x7F000000) >> 24;
@@ -155,13 +164,16 @@ static PyObject *method_ibm32(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_ibm64(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint64_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "K", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint64_t) input;
 
     s = (unsigned_int & 0x8000000000000000) >> 63;
     e = (unsigned_int & 0x7F00000000000000) >> 56;
@@ -178,11 +190,12 @@ static PyObject *method_ibm64(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_dec32(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint32_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "k", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "k", &input)) {
         return NULL;
     }
 
@@ -201,13 +214,16 @@ static PyObject *method_dec32(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_dec64(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint64_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "K", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint64_t) input;
 
     s =  unsigned_int >> 63;
     e = (unsigned_int >> 55) & 0xFF;
@@ -224,13 +240,16 @@ static PyObject *method_dec64(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_dec64g(PyObject *self, PyObject *args) {
+    unsigned long long input;
     uint64_t unsigned_int, m, e, s;
     double result, M, E, S;
 
     /* Parse arguments */
-    if(!PyArg_ParseTuple(args, "K", &unsigned_int)) {
+    if(!PyArg_ParseTuple(args, "K", &input)) {
         return NULL;
     }
+
+    unsigned_int = (uint64_t) input;
 
     s =  unsigned_int >> 63;
     e = (unsigned_int >> 52) & 0x7FF;

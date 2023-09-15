@@ -50,7 +50,7 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
 
     M = ((double) twoscomp(m, 24)) / ((double) (1ULL << 23));
     E = ((double) twoscomp(e,  8));
-    value = (double) M * pow(2.0f, E);
+    value = (double) M * pow((double) 2.0f, E);
     // printf("M = %le\nE = %le\n", M, E);
     // fflush(stdout);
 

@@ -54,7 +54,7 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
     printf("M = %le\nE = %le\n", M, E);
     fflush(stdout);
 
-    return PyFloat_FromDouble((double) value);
+    return PyFloat_FromDouble(value);
 }
 
 static PyObject *method_1750a48(PyObject *self, PyObject *args) {

@@ -1,12 +1,9 @@
 name: python tests+artifacts
 
 on:
-  pull_request:
   push:
     branches:
     - "*"
-    tags:
-    - "v*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}

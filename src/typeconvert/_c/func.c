@@ -48,7 +48,7 @@ static PyObject *method_1750a32(PyObject *self, PyObject *args) {
     e = (unsigned_int & 0x000000FF);
     printf("m = %lu\ne = %lu\n", m, e);
 
-    M = ((double) twoscomp(m, 24)) / ((double) (1UL << 23));
+    M = ((double) twoscomp(m, 24)) / ((double) (1ULL << 23));
     E = ((double) twoscomp(e,  8));
     value = (double) M * pow(2.0f, E);
     printf("M = %le\nE = %le\n", M, E);

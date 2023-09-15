@@ -282,8 +282,9 @@ static PyObject *method_bcd(PyObject *self, PyObject *args) {
     while (input > 0) {
         digit = input & 0xF;
         if (digit >= 10) {
-            result = -1;
-            input = 0;
+            return -1;
+            // result = -1;
+            // input = 0;
         } else {
             result += (signed long long) (digit * place);
             place *= 10;

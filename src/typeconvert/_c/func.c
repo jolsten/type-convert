@@ -190,7 +190,7 @@ static PyObject *method_ibm64(PyObject *self, PyObject *args) {
 }
 
 static PyObject *method_dec32(PyObject *self, PyObject *args) {
-    unsigned long long input;
+    unsigned long input;
     uint32_t unsigned_int, m, e, s;
     double result, M, E, S;
 

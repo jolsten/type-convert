@@ -1,37 +1,68 @@
 import pytest
-import numpy as np
-from itertools import zip_longest
-from typeconvert.types.bcd import func, jfunc, ufunc
+from typeconvert.func import bcd as func
+from typeconvert.ufunc import bcd as ufunc
+from typeconvert._py.func import bcd as py_func
+from typeconvert._py.ufunc import bcd as py_ufunc
+from typeconvert._c.func import bcd as c_func
+from typeconvert._c.ufunc import bcd as c_ufunc
+from .conftest import SpecificCasesBase, NPY_CAST_SAFE
 
 # https://pubs.usgs.gov/of/2005/1424/
-TEST_ARRAY_SIZE = 100
-digits = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=np.uint8)
-np.random.seed(0)
-TEST_CASES = np.random.choice(digits, size=(100, 16))
+TEST_CASES = [
+    (0x03, 3),
+    (0x12, 12),
+    (0x1234, 1234),
+    (0x1986, 1986),
+    (0x12345678, 12345678),
+    (0x19860101, 19860101),
+    (0x20200501, 20200501),
+    (0x1234567890123456, 1234567890123456),
+    # Erroneous Values Test Cases
+    (0x1A, -1),
+    (0xA1, -1),
+    (0xAA, -1),
+    (0xFF, -1),
+    (0x111A, -1),
+    (0xA111, -1),
+    (0xAAAA, -1),
+    (0xFFFF, -1),
+    (0x1111111A, -1),
+    (0xA1111111, -1),
+    (0xAAAAAAAA, -1),
+    (0xFFFFFFFF, -1),
+    (0x111111111111111A, -1),
+    (0xA111111111111111, -1),
+    (0xAAAAAAAAAAAAAAAA, -1),
+    (0xFFFFFFFFFFFFFFFF, -1),
+]
 
-tests = []
-for row in TEST_CASES:
-    hex_str = ''.join([str(x) for x in row])
-    val_in = np.uint64(int(hex_str, base=16))
-    val_out = np.uint64(int(hex(val_in)[2:], base=10))
-    tests.append((val_in, val_out))
 
+@pytest.mark.parametrize("val_in, val_out", TEST_CASES)
+class TestSpecificCases(SpecificCasesBase):
+    def test_py_func(self, val_in, val_out):
+        assert py_func(val_in) == val_out
 
-@pytest.mark.parametrize('val_in, val_out', tests)
-def test_func(val_in, val_out):
-    print('func', val_in, val_out)
-    assert func(val_in) == val_out
+    def test_c_func(self, val_in, val_out):
+        assert c_func(val_in) == val_out
 
+    @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
+    def test_py_ufunc(self, val_in, val_out):
+        size = 4 * len(f"{val_in:x}")
+        data = self.make_ndarray(val_in, size)
+        assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
-@pytest.mark.parametrize('val_in, val_out', tests)
-def test_njit(val_in, val_out):
-    print('jfunc', val_in, val_out)
-    assert jfunc(val_in) == val_out
+    def test_c_ufunc(self, val_in, val_out):
+        size = 4 * len(f"{val_in:x}")
+        data = self.make_ndarray(val_in, size)
+        print(f"{val_in:x}", c_ufunc(data).dtype)
+        assert list(c_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
+    def test_func(self, val_in, val_out):
+        assert func(val_in) == val_out
 
-@pytest.mark.parametrize('val_in, val_out', tests)
-def test_vectorize(val_in, val_out):
-    print('ufunc', val_in, val_out)
-    data = np.array([val_in] * TEST_ARRAY_SIZE)
-    expected = [val_out] * TEST_ARRAY_SIZE
-    assert all([a == b for a, b in zip_longest(ufunc(data), expected)])
+    def test_ufunc(self, val_in, val_out):
+        print(f"val_in = 0x{val_in:x}, val_out = {val_out}")
+        size = 4 * len(f"{val_in:x}")
+        data = self.make_ndarray(val_in, size)
+        print(size, data.dtype)
+        assert list(ufunc(data)) == [val_out] * self.ARRAY_SIZE

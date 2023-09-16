@@ -1,21 +1,24 @@
 [build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel"]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel", "numpy"]
 
 [project]
 name = "typeconvert"
 description = "Convert various unusual data types into integers and floats"
 readme = {file = "README.md", content-type = "text/markdown"}
 dynamic = ["version"]
-requires-python = ">= 3.7"
+requires-python = ">=3.8,<3.12"
 license = {file = "LICENSE.md"}
 dependencies = [
-    "numba>=0.53",
-    "numpy>=1.19,<1.24",
+    "numpy>=1.17",
+    "numba",
 ]
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
 ]
 
 [project.urls]
@@ -33,7 +36,7 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["typeconvert"]
+include = ["typeconvert*"]
 
 [tool.setuptools_scm]
 
@@ -43,3 +46,6 @@ addopts = "--cov=typeconvert --cov-report html"
 testpaths = [
     "tests",
 ]
+
+[tool.check-wheel-contents]
+toplevel = "typeconvert,typeconvert_ext"

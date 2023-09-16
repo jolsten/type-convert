@@ -1,10 +1,7 @@
-try:
-    from ._version import __version__
-except ImportError:
-    from importlib.metadata import version, PackageNotFoundError
+from importlib.metadata import version, PackageNotFoundError
 
-    try:
-        __version__ = version("typeconvert")
-    except PackageNotFoundError:
-        # package is not installed
-        pass
+try:
+    __version__ = version("typeconvert")
+except PackageNotFoundError:
+    # package is not installed
+    pass

@@ -57,7 +57,7 @@ jobs:
     needs: [build_sdist] #, build_wheels]
     runs-on: ubuntu-latest
     environment:
-      name: pypi
+      name: release
       url: https://pypi.org/p/typeconvert  # Replace <package-name> with your PyPI project name
     permissions:
       id-token: write

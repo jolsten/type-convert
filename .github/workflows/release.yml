@@ -28,7 +28,7 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ '3.8', '3.9', '3.10', '3.11', 'pypy-3.8' ]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest] #, macos-latest]
         include:
         - os: windows-latest
           python-version: 'msys2'

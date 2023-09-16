@@ -9,6 +9,12 @@ env:
   FORCE_COLOR: 1
 
 jobs:
+  check_tag:
+    name: Check Git Ref
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run echo ${GITHUB_REF}
+        run: echo ${GITHUB_REF}
 
   # build_wheels:
   #   needs: [test]

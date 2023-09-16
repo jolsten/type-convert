@@ -110,7 +110,8 @@ jobs:
 
 
   upload_pypi:
-    needs: [build_wheels, build_sdist]
+    # needs: [build_wheels, build_sdist]
+    needs: [build_sdist]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:

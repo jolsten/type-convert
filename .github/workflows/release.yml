@@ -9,32 +9,25 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  check_tag:
-    name: Check Git Ref
-    runs-on: ubuntu-latest
+  build_wheels:
+    needs: [test]
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, windows-2022, macos-11]
+
     steps:
-      - name: Run echo ${GITHUB_REF}
-        run: echo ${GITHUB_REF}
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-  # build_wheels:
-  #   needs: [test]
-  #   name: Build wheels on ${{ matrix.os }}
-  #   runs-on: ${{ matrix.os }}
-  #   strategy:
-  #     matrix:
-  #       os: [ubuntu-22.04, windows-2022, macos-11]
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.15.0
 
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-
-  #     - name: Build wheels
-  #       uses: pypa/cibuildwheel@v2.15.0
-
-  #     - uses: actions/upload-artifact@v3
-  #       with:
-  #         path: ./wheelhouse/*.whl
+      - uses: actions/upload-artifact@v3
+        with:
+          path: ./wheelhouse/*.whl
 
   build_sdist:
     name: Build source distribution

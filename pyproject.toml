@@ -9,7 +9,7 @@ dynamic = ["version"]
 requires-python = ">=3.8,<3.12"
 license = {file = "LICENSE.md"}
 dependencies = [
-    "numpy>=1.17",
+    "numpy>=1.17,<1.26",
     "numba",
 ]
 classifiers = [

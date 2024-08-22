@@ -1,6 +1,7 @@
-import packaging.version as pp
 from typing import Optional
+
 import numpy as np
+import packaging.version as pp
 from numpy.typing import DTypeLike
 
 NPY_CAST_SAFE = pp.parse(np.__version__) >= pp.parse("1.23")

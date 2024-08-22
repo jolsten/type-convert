@@ -6,7 +6,7 @@ from typeconvert._py.ufunc import ibm64 as py_ufunc
 from typeconvert.func import ibm64 as func
 from typeconvert.ufunc import ibm64 as ufunc
 
-from .conftest import NPY_CAST_SAFE, SpecificCasesBase
+from .conftest import SpecificCasesBase
 
 # Reference:
 # https://en.wikipedia.org/wiki/IBM_hexadecimal_floating-point
@@ -31,7 +31,7 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_func(self, val_in, val_out):
         assert c_func(val_in) == val_out
 
-        # @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")    def test_py_ufunc(self, val_in, val_out):
+    def test_py_ufunc(self, val_in, val_out):
         data = self.make_ndarray(val_in, SIZE)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 

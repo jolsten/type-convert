@@ -32,15 +32,20 @@ def _validate_unsigned_integer(
     bits: Optional[int] = None,
 ) -> None:
     if not isinstance(value, int):
-        raise TypeError(f"argument must be an integer")
+        msg = "argument must be an integer"
+        raise TypeError(msg)
 
     if min_value is not None and value < min_value:
-        raise ValueError(f"argument must be >= max value {min_value}")
+        msg = f"argument must be >= max value {min_value}"
+        raise ValueError(msg)
 
     if max_value and bits:
-        raise ValueError(f"Must provide either max_value or bits, not both")
+        msg = "Must provide either max_value or bits, not both"
+        raise ValueError(msg)
 
     if bits is not None:
         max_value = 2**bits - 1
+
     if max_value is not None and value > max_value:
-        raise ValueError(f"argument must be <= max value {max_value}")
+        msg = f"argument must be <= max value {max_value}"
+        raise ValueError(msg)

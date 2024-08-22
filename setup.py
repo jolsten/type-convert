@@ -1,5 +1,5 @@
-from setuptools import Extension, setup
 import numpy as np
+from setuptools import Extension, setup
 
 extensions = [
     Extension("func", ["src/typeconvert/_c/func.c"], include_dirs=[np.get_include()]),

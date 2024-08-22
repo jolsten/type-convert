@@ -1,11 +1,12 @@
 import pytest
-from typeconvert.func import bcd as func
-from typeconvert.ufunc import bcd as ufunc
-from typeconvert._py.func import bcd as py_func
-from typeconvert._py.ufunc import bcd as py_ufunc
 from typeconvert._c.func import bcd as c_func
 from typeconvert._c.ufunc import bcd as c_ufunc
-from .conftest import SpecificCasesBase, NPY_CAST_SAFE
+from typeconvert._py.func import bcd as py_func
+from typeconvert._py.ufunc import bcd as py_ufunc
+from typeconvert.func import bcd as func
+from typeconvert.ufunc import bcd as ufunc
+
+from .conftest import NPY_CAST_SAFE, SpecificCasesBase
 
 # https://pubs.usgs.gov/of/2005/1424/
 TEST_CASES = [
@@ -45,8 +46,7 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_func(self, val_in, val_out):
         assert c_func(val_in) == val_out
 
-    @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
-    def test_py_ufunc(self, val_in, val_out):
+        # @pytest.mark.skipif(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")    def test_py_ufunc(self, val_in, val_out):
         size = 4 * len(f"{val_in:x}")
         data = self.make_ndarray(val_in, size)
         assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE

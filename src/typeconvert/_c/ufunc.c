@@ -12,10 +12,8 @@
 #include "./dec64.c"
 #include "./dec64g.c"
 #include "./bcd.c"
-#include "numpy/ndarraytypes.h "
-#include "numpy/ndarrayobject.h"
 
-#define NPY_NO_DEPRECATED_API
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 static PyMethodDef Methods[] = {
     {NULL, NULL, 0, NULL}

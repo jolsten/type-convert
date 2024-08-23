@@ -1,5 +1,5 @@
 import numpy as np
-from typeconvert.utils import _bits_to_dtype, NPY_CAST_SAFE
+from typeconvert.utils import NPY_CAST_SAFE, _bits_to_dtype
 
 
 class SpecificCasesBase:

@@ -49,3 +49,10 @@ testpaths = [
 
 [tool.check-wheel-contents]
 toplevel = "typeconvert,typeconvert_ext"
+
+[tool.cibuildwheel]
+manylinux-x86_64-image = "manylinux2014"
+
+[[tool.cibuildwheel.overrides]]
+select = "cp39-*"
+manylinux-x86_64-image = "manylinux2010"

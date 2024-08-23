@@ -58,6 +58,9 @@ jobs:
         os: [ubuntu-latest, windows-2022, macos-11]
 
     steps:
+      - name: Check Python Version
+        run: python -V
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0

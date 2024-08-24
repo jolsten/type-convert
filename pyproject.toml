@@ -9,7 +9,7 @@ dynamic = ["version"]
 requires-python = ">=3.9,<=3.11"
 license = {file = "LICENSE.md"}
 dependencies = [
-    "numpy>=2.0",
+    "numpy>=2.1",
     "numba",
 ]
 classifiers = [
@@ -49,10 +49,3 @@ testpaths = [
 
 [tool.check-wheel-contents]
 toplevel = "typeconvert,typeconvert_ext"
-
-# [tool.cibuildwheel]
-# manylinux-x86_64-image = "manylinux2014"
-
-# [[tool.cibuildwheel.overrides]]
-# select = "cp39-*"
-# manylinux-x86_64-image = "manylinux2010"

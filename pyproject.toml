@@ -10,7 +10,7 @@ requires-python = ">=3.9,<=3.11"
 license = {file = "LICENSE.md"}
 dependencies = [
     "numpy>=2.1",
-    "numba",
+    # "numba",
 ]
 classifiers = [
     "License :: OSI Approved :: MIT License",

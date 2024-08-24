@@ -1,7 +1,7 @@
 import numpy as np
 
 # from numba import njit, vectorize
-from .twoscomp import jfunc as uint_to_twoscomp
+from .twoscomp import func as uint_to_twoscomp
 
 signatures = [
     "f8(u8)",

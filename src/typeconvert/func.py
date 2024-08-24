@@ -1,41 +1,16 @@
-from typeconvert._c.func import (
-    bcd as _bcd,
-)
-from typeconvert._c.func import (
-    dec32 as _dec32,
-)
-from typeconvert._c.func import (
-    dec64 as _dec64,
-)
-from typeconvert._c.func import (
-    dec64g as _dec64g,
-)
-from typeconvert._c.func import (
-    ibm32 as _ibm32,
-)
-from typeconvert._c.func import (
-    ibm64 as _ibm64,
-)
-from typeconvert._c.func import (
-    milstd1750a32 as _milstd1750a32,
-)
-from typeconvert._c.func import (
-    milstd1750a48 as _milstd1750a48,
-)
-from typeconvert._c.func import (
-    onescomp as _onescomp,
-)
-from typeconvert._c.func import (
-    ti32 as _ti32,
-)
-from typeconvert._c.func import (
-    ti40 as _ti40,
-)
-from typeconvert._c.func import (
-    twoscomp as _twoscomp,
-)
-
-from .utils import _validate_unsigned_integer
+from typeconvert._c.func import bcd as _bcd
+from typeconvert._c.func import dec32 as _dec32
+from typeconvert._c.func import dec64 as _dec64
+from typeconvert._c.func import dec64g as _dec64g
+from typeconvert._c.func import ibm32 as _ibm32
+from typeconvert._c.func import ibm64 as _ibm64
+from typeconvert._c.func import milstd1750a32 as _milstd1750a32
+from typeconvert._c.func import milstd1750a48 as _milstd1750a48
+from typeconvert._c.func import onescomp as _onescomp
+from typeconvert._c.func import ti32 as _ti32
+from typeconvert._c.func import ti40 as _ti40
+from typeconvert._c.func import twoscomp as _twoscomp
+from typeconvert.utils import _validate_unsigned_integer
 
 
 def onescomp(value: int, size: int) -> int:

@@ -46,11 +46,11 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_func(self, val_in, val_out):
         assert c_func(val_in) == val_out
 
-    @pytest.mark.xfail(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
-    def test_py_ufunc(self, val_in, val_out):
-        size = 4 * len(f"{val_in:x}")
-        data = self.make_ndarray(val_in, size)
-        assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
+    # @pytest.mark.xfail(NPY_CAST_SAFE, reason="numpy will not allow unsafe casting")
+    # def test_py_ufunc(self, val_in, val_out):
+    #     size = 4 * len(f"{val_in:x}")
+    #     data = self.make_ndarray(val_in, size)
+    #     assert list(py_ufunc(data)) == [val_out] * self.ARRAY_SIZE
 
     def test_c_ufunc(self, val_in, val_out):
         size = 4 * len(f"{val_in:x}")

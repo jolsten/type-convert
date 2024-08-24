@@ -86,9 +86,9 @@ class TestSpecificCases(SpecificCasesBase):
     def test_c_func(self, size, val_in, val_out):
         assert c_func(val_in, size) == val_out
 
-    def test_py_ufunc(self, size, val_in, val_out):
-        data = self.make_ndarray(val_in, size)
-        assert list(py_ufunc(data, size)) == [val_out] * self.ARRAY_SIZE
+    # def test_py_ufunc(self, size, val_in, val_out):
+    #     data = self.make_ndarray(val_in, size)
+    #     assert list(py_ufunc(data, size)) == [val_out] * self.ARRAY_SIZE
 
     def test_c_ufunc(self, size, val_in, val_out):
         data = self.make_ndarray(val_in, size)

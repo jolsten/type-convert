@@ -1,6 +1,7 @@
 import numpy as np
-from numba import njit, vectorize
-from ..typing import UnsignedInteger, SignedInteger
+
+# from numba import njit, vectorize
+from ..typing import SignedInteger, UnsignedInteger
 
 signatures = [
     "i1(u1,u1)",
@@ -42,5 +43,5 @@ def func(value: UnsignedInteger, size: np.uint8) -> SignedInteger:
         return np.int64(value)
 
 
-jfunc = njit(signatures)(func)
-ufunc = vectorize(signatures)(func)
+# jfunc = njit(signatures)(func)
+# ufunc = vectorize(signatures)(func)

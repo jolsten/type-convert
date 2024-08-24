@@ -1,8 +1,9 @@
 import numpy as np
-from numba import njit, vectorize
+
+# from numba import njit, vectorize
 
 signatures = [
-    'f8(u4)',
+    "f8(u4)",
 ]
 
 
@@ -32,14 +33,14 @@ def func(value: np.uint32) -> np.float64:
 
     s = (value >> np.uint8(31)) * np.uint32(1)
     e = (value >> np.uint8(24)) & np.uint32(0x7F)
-    m = (value & np.uint32(0x00FFFFFF))
+    m = value & np.uint32(0x00FFFFFF)
 
     S = np.int8(-1) ** s
     E = np.int8(e) - np.int8(64)
     M = np.float64(m) / np.float64(2**24)
 
-    return np.float64(S * M * np.float64(16)**E)
+    return np.float64(S * M * np.float64(16) ** E)
 
 
-jfunc = njit(signatures)(func)
-ufunc = vectorize(signatures)(func)
+# jfunc = njit(signatures)(func)
+# ufunc = vectorize(signatures)(func)

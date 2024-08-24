@@ -1,5 +1,6 @@
 import numpy as np
-from numba import njit, vectorize
+
+# from numba import njit, vectorize
 
 signatures = [
     "u8(i8)",
@@ -46,5 +47,5 @@ def func(value: np.uint64) -> np.int64:
     return result
 
 
-jfunc = njit(signatures)(func)
-ufunc = vectorize(signatures)(func)
+# jfunc = njit(signatures)(func)
+# ufunc = vectorize(signatures)(func)

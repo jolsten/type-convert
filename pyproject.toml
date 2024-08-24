@@ -6,7 +6,7 @@ name = "typeconvert"
 description = "Convert various unusual data types into integers and floats"
 readme = {file = "README.md", content-type = "text/markdown"}
 dynamic = ["version"]
-requires-python = ">=3.8,<3.12"
+requires-python = ">=3.9,<=3.12"
 license = {file = "LICENSE.md"}
 dependencies = [
     "numpy>=2.0",

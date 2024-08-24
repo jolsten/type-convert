@@ -2,7 +2,8 @@ import pytest
 from typeconvert._c.func import twoscomp as c_func
 from typeconvert._c.ufunc import twoscomp as c_ufunc
 from typeconvert._py.func import twoscomp as py_func
-from typeconvert._py.ufunc import twoscomp as py_ufunc
+
+# from typeconvert._py.ufunc import twoscomp as py_ufunc
 from typeconvert.func import twoscomp as func
 from typeconvert.ufunc import twoscomp as ufunc
 

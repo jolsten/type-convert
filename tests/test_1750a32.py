@@ -2,7 +2,8 @@ import pytest
 from typeconvert._c.func import milstd1750a32 as c_func
 from typeconvert._c.ufunc import milstd1750a32 as c_ufunc
 from typeconvert._py.func import milstd1750a32 as py_func
-from typeconvert._py.ufunc import milstd1750a32 as py_ufunc
+
+# from typeconvert._py.ufunc import milstd1750a32 as py_ufunc
 from typeconvert.func import milstd1750a32 as func
 from typeconvert.ufunc import milstd1750a32 as ufunc
 

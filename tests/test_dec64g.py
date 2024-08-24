@@ -2,7 +2,8 @@ import pytest
 from typeconvert._c.func import dec64g as c_func
 from typeconvert._c.ufunc import dec64g as c_ufunc
 from typeconvert._py.func import dec64g as py_func
-from typeconvert._py.ufunc import dec64g as py_ufunc
+
+# from typeconvert._py.ufunc import dec64g as py_ufunc
 from typeconvert.func import dec64g as func
 from typeconvert.ufunc import dec64g as ufunc
 

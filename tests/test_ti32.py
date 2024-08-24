@@ -3,7 +3,8 @@ import pytest
 from typeconvert._c.func import ti32 as c_func
 from typeconvert._c.ufunc import ti32 as c_ufunc
 from typeconvert._py.func import ti32 as py_func
-from typeconvert._py.ufunc import ti32 as py_ufunc
+
+# from typeconvert._py.ufunc import ti32 as py_ufunc
 from typeconvert.func import ti32 as func
 from typeconvert.ufunc import ti32 as ufunc
 

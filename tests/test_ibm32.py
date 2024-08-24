@@ -2,7 +2,8 @@ import pytest
 from typeconvert._c.func import ibm32 as c_func
 from typeconvert._c.ufunc import ibm32 as c_ufunc
 from typeconvert._py.func import ibm32 as py_func
-from typeconvert._py.ufunc import ibm32 as py_ufunc
+
+# from typeconvert._py.ufunc import ibm32 as py_ufunc
 from typeconvert.func import ibm32 as func
 from typeconvert.ufunc import ibm32 as ufunc
 

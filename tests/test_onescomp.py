@@ -2,7 +2,8 @@ import pytest
 from typeconvert._c.func import onescomp as c_func
 from typeconvert._c.ufunc import onescomp as c_ufunc
 from typeconvert._py.func import onescomp as py_func
-from typeconvert._py.ufunc import onescomp as py_ufunc
+
+# from typeconvert._py.ufunc import onescomp as py_ufunc
 from typeconvert.func import onescomp as func
 from typeconvert.ufunc import onescomp as ufunc
 

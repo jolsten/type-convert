@@ -2,7 +2,8 @@ import pytest
 from typeconvert._c.func import bcd as c_func
 from typeconvert._c.ufunc import bcd as c_ufunc
 from typeconvert._py.func import bcd as py_func
-from typeconvert._py.ufunc import bcd as py_ufunc
+
+# from typeconvert._py.ufunc import bcd as py_ufunc
 from typeconvert.func import bcd as func
 from typeconvert.ufunc import bcd as ufunc
 

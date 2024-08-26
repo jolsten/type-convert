@@ -51,4 +51,4 @@ testpaths = [
 toplevel = "typeconvert,typeconvert_ext"
 
 [tool.cibuildwheel]
-skip = "pp* *macos* macos*" # Skip building, PyPy wheel fails
+skip = "pp* *mac* mac*" # Skip building, PyPy wheel fails

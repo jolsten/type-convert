@@ -27,7 +27,6 @@ jobs:
 
   test:
     needs: [package]
-    name: Pytest
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

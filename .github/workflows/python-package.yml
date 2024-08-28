@@ -15,7 +15,7 @@ env:
 jobs:
 
   package:
-    name: Build & inspect our package.
+    name: Build & inspect package
     runs-on: ubuntu-latest
 
     steps:
@@ -27,12 +27,13 @@ jobs:
 
   test:
     needs: [package]
+    name: Pytest
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         python-version: [ '3.9', '3.10', '3.11', '3.12', 'pypy-3.9' ]
-        os: [ubuntu-latest, windows-latest] #, macos-latest]
+        os: [ubuntu-latest, windows-latest]
         include:
         - os: windows-latest
           python-version: 'msys2'
@@ -85,25 +86,3 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
-
-  upload_test_pypi:
-    needs: [build_sdist, build_wheels]
-    name: TEST - Publish Python 🐍 distribution 📦 to PyPI
-    # if: startsWith(github.ref, 'refs/tags')
-    runs-on: ubuntu-latest
-    environment:
-      name: release
-      url: https://pypi.org/p/typeconvert
-    permissions:
-      id-token: write
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v4
-        with:
-          name: artifact
-          path: dist
-
-      - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/

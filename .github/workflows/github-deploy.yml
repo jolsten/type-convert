@@ -71,7 +71,7 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
   upload_pypi:
-    needs: [upload_test_pypi]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:

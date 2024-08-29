@@ -51,5 +51,4 @@ testpaths = [
 toplevel = "typeconvert,typeconvert_ext"
 
 [tool.cibuildwheel]
-select = "cp39-manylinux_x86_64"
-# skip = "pp* *mac* macos-11 *i686*" # Skip building, PyPy wheel fails
+skip = "pp* *mac* macos-11 *i686* cp310* cp311* cp312*" # Skip building, PyPy wheel fails

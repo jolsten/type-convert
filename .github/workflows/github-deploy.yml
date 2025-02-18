@@ -13,46 +13,12 @@ on:
       - published
 
 jobs:
-  package:
-    name: Build & inspect package
-    runs-on: ubuntu-latest
-
+  build-sdist:
+    name: Build sdist package
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: hynek/build-and-inspect-python-package@v2
-
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    needs: [package]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: ./wheelhouse/*.whl
-
-  build_sdist:
-    name: Build source distribution
-    needs: [package]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repos
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -66,15 +32,225 @@ jobs:
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
+
+  build-wheel:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest]
+        pyver: [cp39, cp310, cp311, cp312, cp313]
+
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.22.0
+        env:
+          CIBW_BUILD: ${{matrix.pyver}}-*
+          CIBW_ARCHS_LINUX: auto
+          CIBW_ARCHS_MACOS: auto universal2
+          CIBW_ARCHS_WINDOWS: auto
+          CIBW_TEST_EXTRAS: test
+          CIBW_TEST_COMMAND: pytest --color=yes -m 'not embedded' {project}/tests
+          # Passing a space in a param is a b*tch on windows.
+          # However embedded tests are skipped anyway there.
+          CIBW_TEST_COMMAND_WINDOWS: pytest --color=yes {project}/tests
+          # musllinux tests fail with some pid mixup
+          # cross-build macos images can't be tested on this runner.
+          CIBW_TEST_SKIP: >-
+            *-musllinux_*
+            *-macosx_universal2:arm64
+            pp*-macosx_*
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.pyver }}-${{ matrix.os }}
+          path: ./wheelhouse/*.whl
+
+
+  build-cross-wheel:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        pyver: [cp38, cp39, cp310, cp311, cp312, cp313]
+        arch: [aarch64, ppc64le]
+
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.22.0
+        env:
+          CIBW_BUILD: ${{matrix.pyver}}-*
+          CIBW_ARCHS: ${{matrix.arch}}
+
+      # Tests mostly fail because of some confusion with the python interpreter
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheel-${{ matrix.pyver }}-${{ matrix.arch }}
+          path: ./wheelhouse/*.whl
+
+
+  build-wheel-pypy:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.22.0
+        env:
+          CIBW_BUILD: pp*
+          CIBW_SKIP: pp37-*
+          CIBW_TEST_EXTRAS: test
+          CIBW_TEST_COMMAND: pytest --color=yes -m 'not embedded' {project}/tests
+          # Passing a space in a param is a b*tch on windows.
+          # However embedded tests are skipped anyway there.
+          CIBW_TEST_COMMAND_WINDOWS: pytest --color=yes {project}/tests
+          # musllinux tests fail with some pid mixup
+          # cross-build macos images can't be tested on this runner.
+          CIBW_TEST_SKIP: >-
+            *-musllinux_*
+            *-macosx_universal2:arm64
+            pp*-macosx_*
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-pp-${{ matrix.os }}
+          path: ./wheelhouse/*.whl
+
+
+  build-cross-wheel-pypy:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+
+    steps:
+      - name: Checkout repos
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up QEMU for multi-arch build
+        uses: docker/setup-qemu-action@v3
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.22.0
+        env:
+          CIBW_BUILD: pp*
+          CIBW_SKIP: pp37-*
+
+      # Tests mostly fail because of some confusion with the python interpreter
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-pp-cross
+          path: ./wheelhouse/*.whl
+
+
+  merge:
+    runs-on: ubuntu-latest
+    needs:
+      - build-sdist
+      - build-wheel
+      - build-cross-wheel
+      - build-wheel-pypy
+      - build-cross-wheel-pypy
+    steps:
+      - name: Merge Artifacts
+        uses: actions/upload-artifact/merge@v4
+        with:
+          name: typeconvert-artifacts
+          delete-merged: true
+
+
+  # build-wheels:
+  #   name: Build wheels on ${{ matrix.os }}
+  #   needs: [inspect]
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, windows-latest]
+
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Install uv and set the python version
+  #       uses: astral-sh/setup-uv@v5
+
+  #     - name: Build wheels
+  #       uses: pypa/cibuildwheel@v2.22.0
+
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+  #         path: ./wheelhouse/*.whl
+
+  # build_sdist:
+  #   name: Build source distribution
+  #   needs: [package]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+
+  #     - name: Install uv and set the python version
+  #       uses: astral-sh/setup-uv@v5
+
+  #     - name: Build sdist
+  #       run: uv build --sdist
+
+  #     - uses: actions/upload-artifact@v4
+  #       with:
+  #         name: cibw-sdist
+  #         path: dist/*.tar.gz
       
-      - name: Check some variables
-        run: |
-          echo GITHUB_REF = $GITHUB_REF
-          echo GITHUB_REF_NAME = $GITHUB_REF_NAME
-          echo GITHUB_EVENT_NAME = $GITHUB_EVENT_NAME
+  #     - name: Check some variables
+  #       run: |
+  #         echo GITHUB_REF = $GITHUB_REF
+  #         echo GITHUB_REF_NAME = $GITHUB_REF_NAME
+  #         echo GITHUB_EVENT_NAME = $GITHUB_EVENT_NAME
 
   upload_test_pypi:
-    needs: [build_wheels, build_sdist]
+    needs: [merge]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
@@ -93,7 +269,7 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
   upload_pypi:
-    needs: [build_wheels, build_sdist]
+    needs: [merge]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:

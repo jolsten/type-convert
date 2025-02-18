@@ -13,7 +13,7 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  build-and-inspect-package:
+  package:
     name: Build & inspect package
     runs-on: ubuntu-latest
 

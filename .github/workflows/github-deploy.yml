@@ -13,15 +13,15 @@ on:
       - published
 
 jobs:
-  package:
-    name: Build & inspect package
-    runs-on: ubuntu-latest
+  # package:
+  #   name: Build & inspect package
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: hynek/build-and-inspect-python-package@v2
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
+  #     - uses: hynek/build-and-inspect-python-package@v2
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}

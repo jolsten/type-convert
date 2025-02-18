@@ -31,9 +31,9 @@ jobs:
       matrix:
         python-version: [ '3.9', '3.10', '3.11', '3.12', '3.13' ]
         os: [ubuntu-latest, windows-latest]
-        include:
-        - os: windows-latest
-          python-version: 'msys2'
+        # include:
+        # - os: windows-latest
+        #   python-version: 'msys2'
 
     name: ${{ matrix.os }} - Python ${{ matrix.python-version }}
     steps:

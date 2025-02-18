@@ -13,7 +13,7 @@ env:
   FORCE_COLOR: 1
 
 jobs:
-  package:
+  build:
     name: Build & inspect package
     runs-on: ubuntu-latest
 
@@ -24,7 +24,7 @@ jobs:
       - uses: hynek/build-and-inspect-python-package@v2
 
   test:
-    needs: [package]
+    needs: [build]
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -42,6 +42,7 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Run pytest
         run: uv run pytest
 
@@ -66,21 +67,21 @@ jobs:
   #     #     name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
   #     #     path: wheelhouse/*.whl
   
-  build_sdist:
-    needs: [test]
-    name: Build source distribution
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+  # build_sdist:
+  #   needs: [test]
+  #   name: Build source distribution
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 0
 
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
+  #     - name: Install uv and set the python version
+  #       uses: astral-sh/setup-uv@v5
 
-      - name: Build sdist
-        run: uv build --sdist
+  #     - name: Build sdist
+  #       run: uv build --sdist
 
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     path: dist/*.tar.gz
+  #     # - uses: actions/upload-artifact@v4
+  #     #   with:
+  #     #     path: dist/*.tar.gz

@@ -13,8 +13,19 @@ on:
       - published
 
 jobs:
+  package:
+    name: Build & inspect package
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: hynek/build-and-inspect-python-package@v2
+
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
+    needs: [package]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -22,6 +33,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.20.0
@@ -33,12 +49,18 @@ jobs:
 
   build_sdist:
     name: Build source distribution
+    needs: [package]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
 
       - name: Build sdist
-        run: pipx run build --sdist
+        run: uv build --sdist
 
       - uses: actions/upload-artifact@v4
         with:

@@ -79,6 +79,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install uv and set the python version
+        uses: astral-sh/setup-uv@v5
+
       - name: Build sdist
         run: pipx run build --sdist
 

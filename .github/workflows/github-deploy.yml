@@ -47,27 +47,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
+      # - name: Install uv and set the python version
+      #   uses: astral-sh/setup-uv@v5
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD: ${{matrix.pyver}}-*
-          CIBW_ARCHS_LINUX: auto
-          CIBW_ARCHS_MACOS: auto universal2
-          CIBW_ARCHS_WINDOWS: auto
-          # CIBW_TEST_EXTRAS: test
-          # CIBW_TEST_COMMAND: pytest --color=yes -m 'not embedded' {project}/tests
-          # # Passing a space in a param is a b*tch on windows.
-          # # However embedded tests are skipped anyway there.
-          # CIBW_TEST_COMMAND_WINDOWS: pytest --color=yes {project}/tests
-          # # musllinux tests fail with some pid mixup
-          # # cross-build macos images can't be tested on this runner.
-          CIBW_TEST_SKIP: >-
-            *-musllinux_*
-            *-macosx_universal2:arm64
-            pp*-macosx_*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -90,8 +76,8 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
+      # - name: Install uv and set the python version
+      #   uses: astral-sh/setup-uv@v5
 
       - name: Set up QEMU for multi-arch build
         uses: docker/setup-qemu-action@v3
@@ -124,25 +110,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install uv and set the python version
-        uses: astral-sh/setup-uv@v5
+      # - name: Install uv and set the python version
+      #   uses: astral-sh/setup-uv@v5
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
         env:
           CIBW_BUILD: pp*
           CIBW_SKIP: pp37-*
-          # CIBW_TEST_EXTRAS: test
-          # CIBW_TEST_COMMAND: pytest --color=yes -m 'not embedded' {project}/tests
-          # Passing a space in a param is a b*tch on windows.
-          # However embedded tests are skipped anyway there.
-          # CIBW_TEST_COMMAND_WINDOWS: pytest --color=yes {project}/tests
-          # musllinux tests fail with some pid mixup
-          # cross-build macos images can't be tested on this runner.
-          CIBW_TEST_SKIP: >-
-            *-musllinux_*
-            *-macosx_universal2:arm64
-            pp*-macosx_*
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

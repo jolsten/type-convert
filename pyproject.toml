@@ -1,44 +1,32 @@
-[build-system]
-requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2", "wheel", "numpy>=2"]
-
 [project]
 name = "typeconvert"
-description = "Convert various unusual data types into integers and floats"
-readme = {file = "README.md", content-type = "text/markdown"}
-dynamic = ["version"]
-requires-python = ">=3.9,<=3.12"
-license = {file = "LICENSE.md"}
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
 dependencies = [
     "numpy>=2",
 ]
-classifiers = [
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
+dynamic = ["version"]
+
+[dependency-groups]
+dev = [
+    "cibuildwheel>=2.22.0",
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "setuptools-scm>=8.1.0",
 ]
+
+[build-system]
+requires = ["setuptools>=64", "numpy>=2", "setuptools-scm>=8"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
 repository = "https://github.com/jolsten/type-convert"
 
-[project.optional-dependencies]
-dev = [
-  "build",
-  "setuptools>=45",
-  "setuptools_scm[toml]>=6.2",
-  "wheel",
-  "pytest",
-  "pytest-cov",
-]
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["typeconvert*"]
-
 [tool.setuptools_scm]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -46,9 +34,6 @@ addopts = "--cov=typeconvert --cov-report html"
 testpaths = [
     "tests",
 ]
-
-[tool.check-wheel-contents]
-toplevel = "typeconvert,typeconvert_ext"
 
 [tool.cibuildwheel]
 skip = "pp* *mac* macos-11" # Skip building, PyPy wheel fails

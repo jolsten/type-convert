@@ -171,7 +171,7 @@ jobs:
       - name: Merge Artifacts
         uses: actions/upload-artifact/merge@v4
         with:
-          name: typeconvert-artifacts
+          name: cibw-artifacts
           delete-merged: true
 
 

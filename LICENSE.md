@@ -1,6 +1,6 @@
 # MIT License
 
-Copyright (c) 2022 Jonathan Olsten
+Copyright (c) 2025 Jonathan Olsten
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

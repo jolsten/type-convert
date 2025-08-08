@@ -1,4 +1,4 @@
-# type-converter
+# typeconvert
 Convert various unsigned integers to non-native Python or Numpy types.
 
 # function types
@@ -15,7 +15,7 @@ from typeconvert.ufunc import <function_name_here>
 
 ## scalar functions
 
-The scalar functions take unsigned Python `int` as inputs and return either an `int` or Pytho `float` as appropriate.
+The scalar functions take unsigned Python `int` as inputs and return either an `int` or Python `float` as appropriate.
 
 ## numpy universal functions
 
